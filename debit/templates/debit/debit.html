@@ -1,0 +1,112 @@
+{% extends 'debit/pattern.html' %} 
+
+
+{% block content%}
+        <div>
+            <div class="form" style="border-color: #FFBA08;">
+                <p style="font-size: 1.5rem;">Создание</p>
+                <label for="startDate" style="margin-bottom: 0.5rem;">Дата</label>
+                <input id="startDate" class="form-control" type="date" />
+                <label for="startDate" style="margin-bottom: 0.5rem; margin-top: 1rem;">Сколько</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">₽</span>
+                    <span class="input-group-text">0.00</span>
+                    <input type="text" class="form-control" aria-label="amount">
+                </div>
+                <label for="startDate" style="margin-bottom: 0.5rem;">Категория</label>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>зарплата</option>
+                    <option value="1">подработка</option>
+                    <option value="2">инвестиции</option>
+                    <option value="3">подарки</option>
+                </select>
+                <button type="button" class="btn btn-outline-success" style="margin-top: 1rem;">Создать запись</button>
+            </div>
+            <div class="form" style="border-color: #136F63; height: 300px">
+                <p style="font-size: 1.5rem;">Ваши записи</p>
+                <div style="overflow: auto; height: 200px">
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-group-item" style="width: 35%;">39</li>
+                        <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 35%;">32120.00</li>
+                        <li class="list-group-item" style="width: 35%;">зарплата</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal-sm">
+                        <li class="list-group-item" style="width: 1fr;">39</li>
+                        <li class="list-group-item" style="width: 1fr;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 1fr;">323120.00</li>
+                        <li class="list-group-item" style="width: 1fr;">инвестиции</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal-md">
+                        <li class="list-group-item" style="width: 35%;">39</li>
+                        <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 35%;">3232120.00</li>
+                        <li class="list-group-item" style="width: 35%;">подработка</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-group-item" style="width: 35%;">39</li>
+                        <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 35%;">32120.00</li>
+                        <li class="list-group-item" style="width: 35%;">зарплата</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal-sm">
+                        <li class="list-group-item" style="width: 35%;">39</li>
+                        <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 35%;">323120.00</li>
+                        <li class="list-group-item" style="width: 35%;">инвестиции</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal-md">
+                        <li class="list-group-item" style="width: 35%;">39</li>
+                        <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 35%;">3232120.00</li>
+                        <li class="list-group-item" style="width: 35%;">подработка</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal-sm">
+                        <li class="list-group-item" style="width: 35%;">39</li>
+                        <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 35%;">323120.00</li>
+                        <li class="list-group-item" style="width: 35%;">инвестиции</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal-md">
+                        <li class="list-group-item" style="width: 35%;">39</li>
+                        <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 35%;">3232120.00</li>
+                        <li class="list-group-item" style="width: 35%;">подработка</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-group-item" style="width: 35%;">39</li>
+                        <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 35%;">32120.00</li>
+                        <li class="list-group-item" style="width: 35%;">зарплата</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal-sm">
+                        <li class="list-group-item" style="width: 35%;">40</li>
+                        <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 35%;">323120.00</li>
+                        <li class="list-group-item" style="width: 35%;">инвестиции</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal-md">
+                        <li class="list-group-item" style="width: 35%;">41</li>
+                        <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                        <li class="list-group-item" style="width: 35%;">3232120.00</li>
+                        <li class="list-group-item" style="width: 35%;">подработка</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form" style="border-color: #3772FF;">
+                <p style="font-size: 1.5rem;">Удаление</p>
+                <form>
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">Номер записи</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <button type="submit" class="btn btn-outline-danger">Удалить</button>
+                  </form>
+            </div>
+        </div>
+{% endblock content%}
+
+
+{% block page2 %}
+style="text-decoration: underline;"
+{% endblock page2%}

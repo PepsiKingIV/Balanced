@@ -1,0 +1,153 @@
+body {
+    margin: none;
+    padding: none;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+}
+
+
+
+
+::-webkit-scrollbar {
+    width: 3px;
+    background-color: #000;}
+
+
+.header {
+    font-size: 1.7rem;
+    display: flex;
+    width: 100vw;
+}
+
+
+
+.select {
+    text-decoration: underline;
+    text-decoration-color: #7f7f7f;
+}
+
+.content {
+    display: grid;
+    width: 100vw;
+    grid-template-columns: 1fr 2fr 1fr;
+    height: 80vh;
+}
+
+.list-group{
+    width: 100%;    
+}
+
+.list-group-item {
+    width: 33%;
+}
+
+
+.content>div {
+    background-color: rgb(26, 26, 26);
+    grid-column: 2/3;
+    height: 110%;
+    border-radius: 1rem;
+    padding: 2rem;
+    padding-bottom: none;
+    overflow: auto;
+}
+
+.form {
+    background-color: #000;
+    border: solid;
+    border-width: 0.5rem;
+    border-radius: 1rem;
+    color: #fff;
+    padding: 1rem;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+body>div>a>p:hover {
+    color: #198754;
+}
+
+body>nav>div>a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+body>nav>div>a:hover {
+    color: #198754;
+}
+
+.nav-link {
+    color: #fff;
+}
+
+.navbar {
+    height: 5rem;
+}
+
+
+.nav-link:hover {
+    color: #198754;
+}
+
+.list-group-item {
+    background-color: rgb(26, 26, 26);
+    color: #fff;
+    border-color: #7f7f7f;
+}
+
+@media (max-width: 1350px) {
+    .content {
+        width: 100%;
+        height: 80vh;
+    }
+
+    .content>div {
+        background-color: rgb(26, 26, 26);
+        grid-column: 1/4;
+        height: 110%;
+        border-radius: 1rem;
+        padding: 3rem;
+        overflow: auto;
+    }
+
+
+    .form {
+        background-color: #000;
+        border: solid;
+        border-width: 0.5rem;
+        border-radius: 1rem;
+        color: #fff;
+        padding: 1rem;
+        font-size: 0.8rem;
+    }
+
+
+    .roof {
+        font-size: 1.7rem;
+        display: flex;
+        width: 100vw
+    }
+}
+
+@media (max-width: 780px) {
+    .list-group-item {
+        font-size: 0.5rem;
+        width: 100%
+    }
+
+    .content>div {
+        background-color: rgb(26, 26, 26);
+        grid-column: 1/4;
+        height: 110%;
+        border-radius: 1rem;
+        padding: 0rem;
+        overflow: auto;
+    }
+
+    .list-group{
+        display: flex;
+        flex-direction: row;
+    }
+}
+
