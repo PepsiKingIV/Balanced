@@ -1,7 +1,16 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm
+from django.forms import ModelForm
+from django.contrib import messages
+from .forms import LoginForm, UserRegistrationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django.contrib.auth.models import User
+
+
+
+
 
 def user_login(request):
     data = ''
@@ -11,7 +20,8 @@ def user_login(request):
             cd = form.cleaned_data
             print(cd['username'])
             print(cd['password'])
-            user = authenticate(username=cd['username'], password=cd['password'])
+            user = authenticate(
+                username=cd['username'], password=cd['password'])
             print(user)
             if user is not None:
                 if user.is_active:
@@ -20,7 +30,32 @@ def user_login(request):
                 else:
                     data = 'Несуществующий аккаунт'
             else:
-                data = 'Произошла ошибка регистрации'
+                data = 'Неверный логи либо пароль'
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form, 'data': data})
+
+
+def register(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            username = user_form.data['username']
+            if not User.objects.filter(username=username).exists():
+                new_user = user_form.save(commit=False)
+                new_user.set_password(user_form.cleaned_data['password'])
+                new_user.save()
+                return render(request, 'account/registr.html', {'new_user': new_user, 'data': 'Регистрация прошла успешно'})
+    else:
+        user_form = UserRegistrationForm()
+    return render(request, 'account/registr.html', {'user_form': user_form})
+
+def logout_view(request):
+    logout(request)
+    return HttpResponse("test")
+
+
+@login_required
+def dashboard(request):
+    return render(request, 'account/dashboard.html', {'section': 'dashboard'})
+

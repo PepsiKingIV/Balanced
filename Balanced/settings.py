@@ -1,6 +1,7 @@
 
 
 from pathlib import Path
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -16,6 +17,10 @@ SECRET_KEY = "django-insecure-1!w8cw#8bkxxyo-u4-x%h1_x21@44w5j8aytd(&vk+3cp#32c5
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_URL = reverse_lazy('login')
+LOGOUT_URL = reverse_lazy('logout')
 
 
 # Application definition

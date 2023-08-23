@@ -1,0 +1,12 @@
+{% extends "account/pattern.html" %}
+
+{% block content %}
+<p>Позже здась появится информация о пользователе </p>
+{% if request.user.is_authenticated %}
+бравл старс
+{% endif %}
+{% endblock content%}
+
+{% block page5 %}
+style="text-decoration: underline;"
+{% endblock page5 %}
