@@ -59,7 +59,7 @@ def register(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponse("test")
+    return redirect(to='http://127.0.0.1:8000/account/login/')
 
 
 @login_required
