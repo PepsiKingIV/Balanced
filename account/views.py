@@ -41,11 +41,18 @@ def register(request):
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
             username = user_form.data['username']
-            if not User.objects.filter(username=username).exists():
+            email = user_form.data['email']
+            if User.objects.filter(username=username).exists():
+                return render(request, 'account/registr.html', {'user_form': user_form, 'data': 'Пользователь с таким именем уже существует'})
+            elif User.objects.filter(email=email):
+                return render(request, 'account/registr.html', {'user_form': user_form, 'data': 'Пользователь с такой почтой уже существует'})
+            else:
                 new_user = user_form.save(commit=False)
                 new_user.set_password(user_form.cleaned_data['password'])
                 new_user.save()
-                return render(request, 'account/registr.html', {'new_user': new_user, 'data': 'Регистрация прошла успешно'})
+                return render(request, 'account/registr.html', {'user_form': user_form, 'data': 'Регистрация прошла успешно'})
+        else:
+            return render(request, 'account/registr.html', {'user_form': user_form, 'data': 'Пользователь с таким именем уже существует'})
     else:
         user_form = UserRegistrationForm()
     return render(request, 'account/registr.html', {'user_form': user_form})

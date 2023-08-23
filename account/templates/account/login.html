@@ -17,6 +17,9 @@
         <button type="submit" class="btn btn btn-success">Подтвердить</button>
         <p style="margin-top: 0.5rem; color: {% if data == 'Успешно' %} #38b000  {% else %} #ba181b{% endif %}"> {{data}}</p>
     </form>
+    {% if request.user.is_authenticated %}
+        Вы уже авторизованы
+    {% endif %}
 </div>
 {% endblock content%}
 

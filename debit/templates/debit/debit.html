@@ -2,7 +2,8 @@
 
 
 {% block content%}
-        <div>
+{% if request.user.is_authenticated %}
+    <div>
             <div class="form" style="border-color: #FFBA08;">
                 <p style="font-size: 1.5rem;">Создание</p>
                 <label for="startDate" style="margin-bottom: 0.5rem;">Дата</label>
@@ -104,6 +105,14 @@
                   </form>
             </div>
         </div>
+{% else %}
+<div style="padding: 6rem">
+    <p >Перед тем, как начать пользоваться войдите в аккаунт </p>
+    <a href="http://127.0.0.1:8000/account/login/" style="color: #fff; text-decoration: none;">
+        <button type="button" class="btn btn-outline-success">Авторизоваться</button>
+    </a>
+</div>
+{% endif %}
 {% endblock content%}
 
 

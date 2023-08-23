@@ -2,6 +2,7 @@
 
 
 {% block content%}
+{% if request.user.is_authenticated %}
 <div>
 <div class="form" style="border-color: #226f54;">
     <p style="font-size: 1.5rem;">Создание</p>
@@ -22,88 +23,96 @@
     </select>
     <button type="button" class="btn btn-outline-success" style="margin-top: 1rem;">Создать запись</button>
 </div>
-<div class="form" style="border-color: #FFBA08; height: 300px">
-    <p style="font-size: 1.5rem;">Ваши записи</p>
-    <div style="overflow: auto; height: 200px">
-        <ul class="list-group list-group-horizontal">
-            <li class="list-group-item" style="width: 35%;">39</li>
-            <li class="list-group-item" style="width: 35%;">21.04.2023</li>
-            <li class="list-group-item" style="width: 35%;">32120.00</li>
-            <li class="list-group-item" style="width: 35%;">кварплата</li>
-        </ul>
-        <ul class="list-group list-group-horizontal-sm">
-            <li class="list-group-item" style="width: 1fr;">39</li>
-            <li class="list-group-item" style="width: 1fr;">21.04.2023</li>
-            <li class="list-group-item" style="width: 1fr;">323120.00</li>
-            <li class="list-group-item" style="width: 1fr;">еда</li>
-        </ul>
-        <ul class="list-group list-group-horizontal-md">
-            <li class="list-group-item" style="width: 35%;">39</li>
-            <li class="list-group-item" style="width: 35%;">21.04.2023</li>
-            <li class="list-group-item" style="width: 35%;">3232120.00</li>
-            <li class="list-group-item" style="width: 35%;">одежда</li>
-        </ul>
-        <ul class="list-group list-group-horizontal">
-            <li class="list-group-item" style="width: 35%;">39</li>
-            <li class="list-group-item" style="width: 35%;">21.04.2023</li>
-            <li class="list-group-item" style="width: 35%;">32120.00</li>
-            <li class="list-group-item" style="width: 35%;">транспорт</li>
-        </ul>
-        <ul class="list-group list-group-horizontal-sm">
-            <li class="list-group-item" style="width: 35%;">39</li>
-            <li class="list-group-item" style="width: 35%;">21.04.2023</li>
-            <li class="list-group-item" style="width: 35%;">323120.00</li>
-            <li class="list-group-item" style="width: 35%;">еда</li>
-        </ul>
-        <ul class="list-group list-group-horizontal-md">
-            <li class="list-group-item" style="width: 35%;">39</li>
-            <li class="list-group-item" style="width: 35%;">21.04.2023</li>
-            <li class="list-group-item" style="width: 35%;">3232120.00</li>
-            <li class="list-group-item" style="width: 35%;">развлечения</li>
-        </ul>
-        <ul class="list-group list-group-horizontal-sm">
-            <li class="list-group-item" style="width: 35%;">39</li>
-            <li class="list-group-item" style="width: 35%;">21.04.2023</li>
-            <li class="list-group-item" style="width: 35%;">323120.00</li>
-            <li class="list-group-item" style="width: 35%;">инвестиции</li>
-        </ul>
-        <ul class="list-group list-group-horizontal-md">
-            <li class="list-group-item" style="width: 35%;">39</li>
-            <li class="list-group-item" style="width: 35%;">21.04.2023</li>
-            <li class="list-group-item" style="width: 35%;">3232120.00</li>
-            <li class="list-group-item" style="width: 35%;">еда</li>
-        </ul>
-        <ul class="list-group list-group-horizontal">
-            <li class="list-group-item" style="width: 35%;">39</li>
-            <li class="list-group-item" style="width: 35%;">21.04.2023</li>
-            <li class="list-group-item" style="width: 35%;">32120.00</li>
-            <li class="list-group-item" style="width: 35%;">транспорт</li>
-        </ul>
-        <ul class="list-group list-group-horizontal-sm">
-            <li class="list-group-item" style="width: 35%;">40</li>
-            <li class="list-group-item" style="width: 35%;">21.04.2023</li>
-            <li class="list-group-item" style="width: 35%;">323120.00</li>
-            <li class="list-group-item" style="width: 35%;">развлечения</li>
-        </ul>
-        <ul class="list-group list-group-horizontal-md">
-            <li class="list-group-item" style="width: 35%;">41</li>
-            <li class="list-group-item" style="width: 35%;">21.04.2023</li>
-            <li class="list-group-item" style="width: 35%;">3232120.00</li>
-            <li class="list-group-item" style="width: 35%;">транспорт</li>
-        </ul>
-    </div>
-</div>
-<div class="form" style="border-color: #D00000;">
-    <p style="font-size: 1.5rem;">Удаление</p>
-    <form>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Номер записи</label>
-          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <div class="form" style="border-color: #FFBA08; height: 300px">
+        <p style="font-size: 1.5rem;">Ваши записи</p>
+        <div style="overflow: auto; height: 200px">
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width: 35%;">39</li>
+                <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                <li class="list-group-item" style="width: 35%;">32120.00</li>
+                <li class="list-group-item" style="width: 35%;">кварплата</li>
+            </ul>
+            <ul class="list-group list-group-horizontal-sm">
+                <li class="list-group-item" style="width: 1fr;">39</li>
+                <li class="list-group-item" style="width: 1fr;">21.04.2023</li>
+                <li class="list-group-item" style="width: 1fr;">323120.00</li>
+                <li class="list-group-item" style="width: 1fr;">еда</li>
+            </ul>
+            <ul class="list-group list-group-horizontal-md">
+                <li class="list-group-item" style="width: 35%;">39</li>
+                <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                <li class="list-group-item" style="width: 35%;">3232120.00</li>
+                <li class="list-group-item" style="width: 35%;">одежда</li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width: 35%;">39</li>
+                <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                <li class="list-group-item" style="width: 35%;">32120.00</li>
+                <li class="list-group-item" style="width: 35%;">транспорт</li>
+            </ul>
+            <ul class="list-group list-group-horizontal-sm">
+                <li class="list-group-item" style="width: 35%;">39</li>
+                <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                <li class="list-group-item" style="width: 35%;">323120.00</li>
+                <li class="list-group-item" style="width: 35%;">еда</li>
+            </ul>
+            <ul class="list-group list-group-horizontal-md">
+                <li class="list-group-item" style="width: 35%;">39</li>
+                <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                <li class="list-group-item" style="width: 35%;">3232120.00</li>
+                <li class="list-group-item" style="width: 35%;">развлечения</li>
+            </ul>
+            <ul class="list-group list-group-horizontal-sm">
+                <li class="list-group-item" style="width: 35%;">39</li>
+                <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                <li class="list-group-item" style="width: 35%;">323120.00</li>
+                <li class="list-group-item" style="width: 35%;">инвестиции</li>
+            </ul>
+            <ul class="list-group list-group-horizontal-md">
+                <li class="list-group-item" style="width: 35%;">39</li>
+                <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                <li class="list-group-item" style="width: 35%;">3232120.00</li>
+                <li class="list-group-item" style="width: 35%;">еда</li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item" style="width: 35%;">39</li>
+                <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                <li class="list-group-item" style="width: 35%;">32120.00</li>
+                <li class="list-group-item" style="width: 35%;">транспорт</li>
+            </ul>
+            <ul class="list-group list-group-horizontal-sm">
+                <li class="list-group-item" style="width: 35%;">40</li>
+                <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                <li class="list-group-item" style="width: 35%;">323120.00</li>
+                <li class="list-group-item" style="width: 35%;">развлечения</li>
+            </ul>
+            <ul class="list-group list-group-horizontal-md">
+                <li class="list-group-item" style="width: 35%;">41</li>
+                <li class="list-group-item" style="width: 35%;">21.04.2023</li>
+                <li class="list-group-item" style="width: 35%;">3232120.00</li>
+                <li class="list-group-item" style="width: 35%;">транспорт</li>
+            </ul>
         </div>
-        <button type="submit" class="btn btn-outline-danger">Удалить</button>
-      </form>
-</div>
+    </div>
+    <div class="form" style="border-color: #D00000;">
+        <p style="font-size: 1.5rem;">Удаление</p>
+        <form>
+            <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Номер записи</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+        </form>
+    </div>
 <div>
+    {% else %}
+    <div style="padding: 6rem">
+        <p >Перед тем, как начать пользоваться войдите в аккаунт </p>
+        <a href="http://127.0.0.1:8000/account/login/" style="color: #fff; text-decoration: none;">
+            <button type="button" class="btn btn-outline-success">Авторизоваться</button>
+        </a>
+    </div>
+    {% endif %}
 {% endblock content%}
 
 

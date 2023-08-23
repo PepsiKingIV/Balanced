@@ -1,6 +1,7 @@
 {% extends "user_stat/pattern.html" %}
 
 {% block content%}
+{% if request.user.is_authenticated %}
     <div>
         <div class="form" style="border-color: #FFBA08;">
 
@@ -12,7 +13,14 @@
             <canvas id="myChart" width="400" height="300"></canvas>
         </div>
     </div>
-    
+    {% else %}
+    <div style="padding: 6rem">
+        <p >Перед тем, как начать пользоваться войдите в аккаунт </p>
+        <a href="http://127.0.0.1:8000/account/login/" style="color: #fff; text-decoration: none;">
+            <button type="button" class="btn btn-outline-success">Авторизоваться</button>
+        </a>
+    </div>
+    {% endif %}
 {% endblock content%}
 
 {% block page4 %}
