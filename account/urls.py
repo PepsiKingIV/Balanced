@@ -19,11 +19,11 @@ urlpatterns = [
     path('', views.dashboard),
     path('logout/', views.logout_view, name='logout'),
     path('password-reset/', 
-            PasswordResetView.as_view(),name='password_reset'),
+            views.PasswordResetView2.as_view(),name='password_reset'),
     path('password-reset/done/',
             PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('password-reset/confirm/<uidb64>/<token>/',
-            PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+            views.PasswordResetConfirmView2.as_view(), name='password_reset_confirm'),
     path('password-reset/complete/',
             PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

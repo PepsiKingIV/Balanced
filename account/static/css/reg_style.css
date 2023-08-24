@@ -19,6 +19,12 @@ body {
     height: 80vh;
 }
 
+.content>div{
+    margin-top: 1rem;
+    grid-row: 3/6;
+    grid-column: 2/3;
+}
+
 .header {
     font-size: 1.7rem;
     display: flex;

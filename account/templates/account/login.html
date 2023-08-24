@@ -4,10 +4,16 @@
 
     {% if request.user.is_authenticated %}
     <div class="form">
-        <p style="margin-bottom: 2rem">Вы уже авторизованы</p>
-        <a style="margin-bottom: 2rem" href='http://127.0.0.1:8000/account/logout/'>
-        <button type="button" class="btn btn-outline-danger">Выйти из аккаунта</button>
-        </a>
+        <div style="background-color: rgb(26, 26, 26); padding: 1vw; border-radius: 1rem;">
+            <form>
+                <p style="margin-bottom: 1.5rem">Привязка Telegram аккаунта</p>
+
+            </form>
+            <p style="margin-bottom: 1.5rem">Вы уже авторизованы</p>
+            <a style="margin-bottom: 1.5rem" href='http://127.0.0.1:8000/account/logout/'>
+            <button type="button" class="btn btn-outline-danger">Выйти из аккаунта</button>
+            </a>
+        </div>
     </div>
     {% else %}
     <div class="form">
@@ -22,7 +28,7 @@
                 {{ form.password }}
             </div>
             <div >
-                <button type="submit" class="btn btn btn-success">Подтвердить</button>
+                <button type="submit" class="btn btn-outline-success">Подтвердить</button>
             </div>
             <div style="margin-top: 1rem">
                 <a href="http://127.0.0.1:8000/account/registration/" style="margin-top: 1rem">

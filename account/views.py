@@ -4,6 +4,8 @@ from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
+from . import forms
 
 
 
@@ -62,3 +64,9 @@ def logout_view(request):
 def dashboard(request):
     return render(request, 'account/dashboard.html', {'section': 'dashboard'})
 
+
+class PasswordResetView2(PasswordResetView):
+    form_class = forms.PasswordResetForm2
+
+class PasswordResetConfirmView2(PasswordResetConfirmView):
+    form_class = forms.SetPasswordForm2
