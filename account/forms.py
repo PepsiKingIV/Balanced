@@ -16,6 +16,7 @@ class UserRegistrationForm(forms.ModelForm):
         attrs={'class': 'form-control', 'type': "text", 'id': "exampleInputEmail1", 'aria-describedby': "emailHelp"}))
     email = forms.EmailField(widget=forms.EmailInput(
         attrs={'class': 'form-control', 'type': "email", 'id': "exampleInputEmail1", 'aria-describedby': "emailHelp"}))
+    first_name: forms.CharField()
     password = forms.CharField(label='Password', widget=forms.PasswordInput(
         attrs={"type": "password", "class": "form-control", "id": "exampleInputPassword1"}))
     password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(

@@ -26,4 +26,5 @@ urlpatterns = [
             views.PasswordResetConfirmView2.as_view(), name='password_reset_confirm'),
     path('password-reset/complete/',
             PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('generate-new-token/', views.new_token),
 ]

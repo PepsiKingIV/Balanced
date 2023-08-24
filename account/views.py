@@ -6,12 +6,15 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from . import forms
+import secrets
+
 
 
 
 def user_login(request):
     data = ''
     if request.method == 'POST':
+        token = secrets.token_urlsafe()
         form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
@@ -30,12 +33,18 @@ def user_login(request):
                 data = 'Неверный логи либо пароль'
     else:
         form = LoginForm()
-    return render(request, 'account/login.html', {'form': form, 'data': data})
+        try:
+            token = User.objects.filter(username=f'{request.user}').values()[0]['first_name']
+        except:
+            token = 'none'
+    return render(request, 'account/login.html', {'form': form, 'data': data, 'token': token})
 
 
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
+        token = secrets.token_urlsafe()
+        print(token)
         if user_form.is_valid():
             username = user_form.data['username']
             email = user_form.data['email']
@@ -45,6 +54,7 @@ def register(request):
                 return render(request, 'account/registr.html', {'user_form': user_form, 'data': 'Пользователь с такой почтой уже существует'})
             else:
                 new_user = user_form.save(commit=False)
+                new_user.first_name = token
                 new_user.set_password(user_form.cleaned_data['password'])
                 new_user.save()
                 return render(request, 'account/registr.html', {'user_form': user_form, 'data': 'Регистрация прошла успешно'})
@@ -52,7 +62,7 @@ def register(request):
             return render(request, 'account/registr.html', {'user_form': user_form, 'data': 'Пользователь с таким именем уже существует'})
     else:
         user_form = UserRegistrationForm()
-    return render(request, 'account/registr.html', {'user_form': user_form})
+    return render(request, 'account/registr.html', {'user_form': user_form })
 
 
 def logout_view(request):
@@ -70,3 +80,9 @@ class PasswordResetView2(PasswordResetView):
 
 class PasswordResetConfirmView2(PasswordResetConfirmView):
     form_class = forms.SetPasswordForm2
+    
+def new_token(request):
+    token = secrets.token_urlsafe()
+    old_token = User.objects.filter(username=f'{request.user}').values()[0]['first_name']
+    User.objects.filter(first_name=old_token).update(first_name=token)
+    return redirect(to='http://127.0.0.1:8000/account/login/')
