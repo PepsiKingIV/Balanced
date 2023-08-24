@@ -5,8 +5,8 @@
     {% if request.user.is_authenticated %}
     <div class="form">
         <p style="margin-bottom: 2rem">Вы уже авторизованы</p>
-        <a style="margin-bottom: 2rem" href='http://127.0.0.1:8000/account/logout/'
-        <button type="button" class="btn btn-outline-danger">Выйти из аккаунт</button>
+        <a style="margin-bottom: 2rem" href='http://127.0.0.1:8000/account/logout/'>
+        <button type="button" class="btn btn-outline-danger">Выйти из аккаунта</button>
         </a>
     </div>
     {% else %}
@@ -16,17 +16,24 @@
             <div class="mb-3">
                 <label for="exampleInputText" class="form-label">Имя</label>
                 {{ form.username }}
-                <div id="emailHelp" class="form-text">Введеные данные никода не будут переданы кому-либо еще.</div>
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Пароль</label>
                 {{ form.password }}
             </div>
-            
-            <button type="submit" class="btn btn btn-success">Подтвердить</button>
+            <div >
+                <button type="submit" class="btn btn btn-success">Подтвердить</button>
+            </div>
+            <div style="margin-top: 1rem">
+                <a href="http://127.0.0.1:8000/account/registration/" style="margin-top: 1rem">
+                    <button type="button" class="btn btn-outline-light">Регистрация</button>
+                </a>
+            </div>
             <p style="margin-top: 0.5rem; color: {% if data == 'Успешно' %} #38b000  {% else %} #ba181b{% endif %}"> {{data}}</p>
         </form>
-    </div>
+        <a href="{% url "password_reset" %}" style="margin-top: 1rem">
+            <button type="button" class="btn btn-outline-warning">Восстановить пароль</button>
+        </a>
     {% endif %}
 {% endblock content%}
 

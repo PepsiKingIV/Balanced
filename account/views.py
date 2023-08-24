@@ -1,14 +1,9 @@
-from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.forms import ModelForm
-from django.contrib import messages
 from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
-
-
 
 
 
@@ -56,6 +51,7 @@ def register(request):
     else:
         user_form = UserRegistrationForm()
     return render(request, 'account/registr.html', {'user_form': user_form})
+
 
 def logout_view(request):
     logout(request)

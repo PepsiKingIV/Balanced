@@ -13,7 +13,7 @@ class LoginForm(forms.Form):
 class UserRegistrationForm(forms.ModelForm):
     username = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'type': "text", 'id': "exampleInputEmail1", 'aria-describedby': "emailHelp"}))
-    email = forms.CharField(widget=forms.EmailInput(
+    email = forms.EmailField(widget=forms.EmailInput(
         attrs={'class': 'form-control', 'type': "email", 'id': "exampleInputEmail1", 'aria-describedby': "emailHelp"}))
     password = forms.CharField(label='Password', widget=forms.PasswordInput(
         attrs={"type": "password", "class": "form-control", "id": "exampleInputPassword1"}))
