@@ -6,6 +6,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from . import forms
+from .models import userСategories
 import secrets
 
 
@@ -18,19 +19,20 @@ def user_login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            print(cd['username'])
-            print(cd['password'])
             user = authenticate(
                 username=cd['username'], password=cd['password'])
-            print(user)
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    user_id = User.objects.filter(username=f'{request.user}').values()[0]['id']
+                    if not userСategories.objects.filter(user_id=user_id).exists():
+                        u = userСategories.objects.create(user_id=user_id, telegram_id='tel_id', category = {'cat':'cat'})
                     data = 'Успешно'
                 else:
                     data = 'Несуществующий аккаунт'
             else:
                 data = 'Неверный логи либо пароль'
+            form = LoginForm()
     else:
         form = LoginForm()
         try:
