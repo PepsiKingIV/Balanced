@@ -13,7 +13,7 @@ var myChart = new Chart(ctx, {
     options: {
         title: {
             display: true,
-            text: 'ты педик...',
+            text: 'Доход',
             position: 'top',
             fontSize: 16,
             fontColor: '#fff',

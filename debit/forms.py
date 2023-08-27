@@ -59,4 +59,5 @@ class category(forms.Form):
 
 
 class delete_record(forms.Form):
-    record_id = forms.CharField(max_length=10)
+    record_id = forms.IntegerField(max_value=10, widget=forms.NumberInput(
+        attrs={'type': 'number', 'class': 'form-control', 'aria-label': 'amount'}))

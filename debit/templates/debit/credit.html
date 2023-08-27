@@ -29,6 +29,9 @@
           <label for="startDate" style="margin-bottom: 0.5rem; margin-top: 1rem;">Приоритет расхода</label>
           {{ debit_form.priority }}
           <button type="submit" class="btn btn-outline-success" style="margin-top: 1rem;">Создать запись</button>
+          <a href='http://127.0.0.1:8000/data/credit/'>
+          <button type="button" class="btn btn-outline-secondary" style="margin-top: 1rem;">пропали категории</button>
+          </a>
         </form>
     </div>
     <div class="form" style="border-color: #FFBA08; height: 300px">
@@ -60,10 +63,11 @@
     </div>
     <div class="form" style="border-color: #D00000;">
         <p style="font-size: 1.5rem;">Удаление</p>
-        <form>
+        <form method='post'>
+          {% csrf_token %}
             <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Номер записи</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            {{ delete_form.record_id }}
             </div>
             <button type="submit" class="btn btn-outline-danger">Удалить</button>
         </form>

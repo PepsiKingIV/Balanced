@@ -54,6 +54,10 @@ body {
     overflow: auto;
 }
 
+.table-dark{
+    --bs-table-bg: #000;
+}
+
 .form {
     background-color: #000;
     border: solid;

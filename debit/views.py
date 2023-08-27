@@ -13,7 +13,8 @@ def v_debit(request):
     form_2 = category()
     form_3 = delete_record()
     if request.user.is_authenticated:
-        user_id = User.objects.filter(username=f'{request.user}').values()[0]['id']
+        user_id = User.objects.filter(
+            username=f'{request.user}').values()[0]['id']
         categoryJSON = {}
         if userСategories.objects.filter(user_id=user_id).exists():
             categoryJSON = userСategories.objects.filter(
@@ -24,7 +25,7 @@ def v_debit(request):
                 form_1 = debit_form(request.POST)
                 if form_1.is_valid():
                     db_form = form_1.create_db_form(user_id, request)
-                    credit.record(form = db_form)
+                    data.record(form=db_form)
                     return redirect(to='http://127.0.0.1:8000/data/debit')
             elif 'category' in request.POST:
                 form_2 = category(request.POST)
@@ -34,11 +35,11 @@ def v_debit(request):
                     userСategories.objects.filter(
                         user_id=user_id).update(category=categoryJSON)
                     return redirect(to='http://127.0.0.1:8000/data/debit')
-        else:
-            records = data.objects.all()
-    else:
-        records = ''
-    return render(request, 'debit/debit.html', {'debit_form': form_1, 'category_form': form_2, 'records': records})
+            elif 'record_id' in request.POST:
+                data.delete(request=request.POST)
+                return redirect(to='http://127.0.0.1:8000/data/debit')
+    records = data.objects.all()
+    return render(request, 'debit/debit.html', {'debit_form': form_1, 'category_form': form_2, 'delete_form': form_3, 'records': records})
 
 
 def v_credit(request):
@@ -46,7 +47,8 @@ def v_credit(request):
     form_2 = category()
     form_3 = delete_record()
     if request.user.is_authenticated:
-        user_id = User.objects.filter(username=f'{request.user}').values()[0]['id']
+        user_id = User.objects.filter(
+            username=f'{request.user}').values()[0]['id']
         categoryJSON = {}
         if userСategories.objects.filter(user_id=user_id).exists():
             categoryJSON = userСategories.objects.filter(
@@ -57,7 +59,7 @@ def v_credit(request):
                 form_1 = debit_form(request.POST)
                 if form_1.is_valid():
                     db_form = form_1.create_db_form(user_id, request)
-                    credit.record(form = db_form)
+                    credit.record(form=db_form)
                     return redirect(to='http://127.0.0.1:8000/data/credit')
             elif 'category' in request.POST:
                 form_2 = category(request.POST)
@@ -67,8 +69,8 @@ def v_credit(request):
                     userСategories.objects.filter(
                         user_id=user_id).update(category=categoryJSON)
                     return redirect(to='http://127.0.0.1:8000/data/credit')
-        else:
-            records = credit.objects.all()
-    else: 
-        records = ''
-    return render(request, 'debit/credit.html', {'debit_form': form_1, 'category_form': form_2, 'records': records})
+            elif 'record_id' in request.POST:
+                credit.delete(request=request.POST)
+                return redirect(to='http://127.0.0.1:8000/data/credit')
+    records = credit.objects.all()
+    return render(request, 'debit/credit.html', {'debit_form': form_1, 'category_form': form_2, 'delete_form': form_3, 'records': records})

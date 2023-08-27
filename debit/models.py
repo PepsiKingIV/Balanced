@@ -15,6 +15,24 @@ class data(models.Model):
     class Meta:
         verbose_name = 'Доход'
         verbose_name_plural = 'Доходы'
+        
+    def record(self, form):
+        try:
+            self.objects.create(user_id=form['user_id'],
+                            date=form['date'],
+                            category=form['category'], 
+                            amount=form['amount'])
+            return True
+        except:
+            return False
+        
+    def delete(request):
+        try:
+            id = int(request['record_id'])
+            data.objects.filter(id=id).delete()
+            return True
+        except:
+            return False
     
     
 class credit(models.Model):
@@ -38,6 +56,14 @@ class credit(models.Model):
                             category=form['category'], 
                             amount=form['amount'], 
                             priority = form['priority'])
+            return True
+        except:
+            return False
+        
+    def delete(request):
+        try:
+            id = int(request['record_id'])
+            credit.objects.filter(id=id).delete()
             return True
         except:
             return False
