@@ -30,3 +30,14 @@ class credit(models.Model):
     class Meta:
         verbose_name = 'Расход'
         verbose_name_plural = 'Расходы'
+        
+    def record(self, form):
+        try:
+            self.objects.create(user_id=form['user_id'],
+                            date=form['date'],
+                            category=form['category'], 
+                            amount=form['amount'], 
+                            priority = form['priority'])
+            return True
+        except:
+            return False
