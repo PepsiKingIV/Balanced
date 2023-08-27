@@ -26,7 +26,7 @@ def user_login(request):
                     login(request, user)
                     user_id = User.objects.filter(username=f'{request.user}').values()[0]['id']
                     if not userСategories.objects.filter(user_id=user_id).exists():
-                        u = userСategories.objects.create(user_id=user_id, telegram_id='tel_id', category = {'cat':'cat'})
+                        u = userСategories.objects.create(user_id=user_id, telegram_id='tel_id', category = {'debit': ['cat_d'], 'credit':['cat_c']})
                     data = 'Успешно'
                 else:
                     data = 'Несуществующий аккаунт'

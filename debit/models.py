@@ -1,15 +1,16 @@
 from django.db import models
 
+
 # Create your models here.
 
-class debit(models.Model):
+class data(models.Model):
+
+    
     user_id = models.CharField(max_length=30)
-    date = models.DateField()
-    categoty = models.CharField(max_length=50)
+    date = models.CharField()
+    category = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
     
-    def __str__(self) -> str:
-        return self.title
     
     class Meta:
         verbose_name = 'Доход'
@@ -18,8 +19,8 @@ class debit(models.Model):
     
 class credit(models.Model):
     user_id = models.CharField(max_length=30)
-    date = models.DateField()
-    categoty = models.CharField(max_length=50)
+    date = models.CharField()
+    category = models.CharField(max_length=50)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
     priority = models.IntegerField()
     

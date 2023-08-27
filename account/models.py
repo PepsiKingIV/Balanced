@@ -3,7 +3,7 @@ from django.db import models
 class userСategories(models.Model):
     user_id = models.CharField(max_length=30, name='user_id')
     telegram_id = models.CharField(max_length=30, name='telegram_id')
-    category = models.JSONField(name='category')
+    category = models.JSONField()
     
     def __str__(self) -> str:
         return self.user_id

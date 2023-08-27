@@ -5,40 +5,34 @@
 {% if request.user.is_authenticated %}
 <div>
     <div class="form" style="border-color: #840032;">
-      <form>
+      <form method='post'>
         <p style="font-size: 1.5rem;">Добавить категорию </p>
-        {% csrf_token %} {{ category_form }}
+        {% csrf_token %} 
+        {{ category_form.category }}
         <button type="submit" class="btn btn-outline-success" style="margin-top: 1rem;">Добавить</button>
       </form>
     </div>
-    {% if data.categoryRecords %}
     <div class="form" style="border-color: #226f54;">
         <p style="font-size: 1.5rem;">Создание</p>
-        <form>
+        <form method='post'>
           {% csrf_token %} 
           <label for="startDate" style="margin-bottom: 0.5rem;">Дата</label>
-          {{ category_form.date }}
+          {{ debit_form.date }}
           <label for="startDate" style="margin-bottom: 0.5rem; margin-top: 1rem;">Сколько</label>
           <div class="input-group mb-3">
               <span class="input-group-text">₽</span>
               <span class="input-group-text">0.00</span>
+              {{ debit_form.amount }}
           </div>
           <label for="startDate" style="margin-bottom: 0.5rem;">Категория</label>
-          <select class="form-select" aria-label="Default select example">
-              <option selected>кварплата</option>
-              <option value="1">еда</option>
-              <option value="2">одежда</option>
-              <option value="3">транспорт</option>
-          </select>
+          {{ debit_form.category }}
+
+          {% comment %} <select class="form-select" aria-label="Default select example">
+            <option value="{{ 1 }}">err</option>
+          </select> {% endcomment %}
           <button type="submit" class="btn btn-outline-success" style="margin-top: 1rem;">Создать запись</button>
         </form>
     </div>
-    {% else%}
-    <div class="form" style="border-color: #226f54;">
-      <p style="font-size: 1rem; color: #fff">Перед созданием записи нужно добавить категории</p>
-  </div>
-    {% endif %}
-    {% if data.debitTableRecords %}
     <div class="form" style="border-color: #FFBA08; height: 300px">
         <p style="font-size: 1.5rem;">Ваши записи</p>
         <div class="table-responsive" style="overflow: auto; height: 200px; border-radius: 1rem">
@@ -52,24 +46,14 @@
                   </tr>
                 </thead>
                 <tbody>
+                  {% for el in records %}
                   <tr>
-                    <th scope="row">1</th>
-                    <td>11.02.2012</td>
-                    <td>202310,21</td>
-                    <td>зарплата</td>
+                    <th scope="row">{{el.id}}</th>
+                    <td>{{el.date}}</td>
+                    <td>{{el.amount}}</td>
+                    <td>{{el.category}}</td>
                   </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>11.02.2012</td>
-                    <td>202310,21</td>
-                    <td>зарплата</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>11.02.2012</td>
-                    <td>202310,21</td>
-                    <td>зарплата</td>
-                  </tr>
+                  {% endfor %}
                 </tbody>
               </table> 
           </div>
@@ -86,7 +70,6 @@
     </div>
     </div>
 </div>
-  {% endif %}
     {% else %}
     <div style="padding: 6rem">
         <p >Перед тем, как начать пользоваться войдите в аккаунт </p>
