@@ -16,9 +16,9 @@ class data(models.Model):
         verbose_name = 'Доход'
         verbose_name_plural = 'Доходы'
         
-    def record(self, form):
+    def record(form):
         try:
-            self.objects.create(user_id=form['user_id'],
+            data.objects.create(user_id=form['user_id'],
                             date=form['date'],
                             category=form['category'], 
                             amount=form['amount'])
@@ -49,9 +49,9 @@ class credit(models.Model):
         verbose_name = 'Расход'
         verbose_name_plural = 'Расходы'
         
-    def record(self, form):
+    def record(form):
         try:
-            self.objects.create(user_id=form['user_id'],
+            credit.objects.create(user_id=form['user_id'],
                             date=form['date'],
                             category=form['category'], 
                             amount=form['amount'], 

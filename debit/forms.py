@@ -11,8 +11,9 @@ class debit_form(forms.Form):
     category = forms.ChoiceField(choices=[], required=True, widget=forms.Select(
         attrs={'class': 'form-control form-control-lg  select', 'style': 'font-size: 1rem;'}))
     
-    def create_db_form(user_id, request):
+    def create_db_form(self, user_id, request):
         out_form = {
+                'user_id' : user_id,
                 'date' : request.POST['date'],
                 'category' : request.POST['category'],
                 'amount' : request.POST['amount'],
@@ -36,8 +37,9 @@ class credit_form(forms.Form):
     priority = forms.IntegerField(max_value=10, widget=forms.NumberInput(
         attrs={'type': 'number', 'class': 'form-control', 'aria-label': 'amount'}))
 
-    def create_db_form(user_id, request):
+    def create_db_form(self, user_id, request):
         out_form = {
+                'user_id' : user_id,
                 'date' : request.POST['date'],
                 'category' : request.POST['category'],
                 'amount' : request.POST['amount'],

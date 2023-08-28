@@ -38,7 +38,7 @@ def v_debit(request):
             elif 'record_id' in request.POST:
                 data.delete(request=request.POST)
                 return redirect(to='http://127.0.0.1:8000/data/debit')
-    records = data.objects.all()
+    records = data.objects.all().order_by('-id')
     return render(request, 'debit/debit.html', {'debit_form': form_1, 'category_form': form_2, 'delete_form': form_3, 'records': records})
 
 
@@ -72,5 +72,5 @@ def v_credit(request):
             elif 'record_id' in request.POST:
                 credit.delete(request=request.POST)
                 return redirect(to='http://127.0.0.1:8000/data/credit')
-    records = credit.objects.all()
+    records = credit.objects.all().order_by('-id')
     return render(request, 'debit/credit.html', {'debit_form': form_1, 'category_form': form_2, 'delete_form': form_3, 'records': records})
