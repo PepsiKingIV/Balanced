@@ -26,6 +26,21 @@ def week(request):
     return render(request, 'user_stat/script.html', out_data)
 
 
+def modificatio_for_week(records):
+    now_week = datetime.now().isocalendar()[1]
+    out_data = []
+    for el in records:
+        date = str(el.date)
+        year = int(date[0:4])
+        month = int(date[5:7])
+        day = int(date[8:10])
+        week_number = int(datetime.date(
+            datetime(year, month, day)).isocalendar()[1])
+        if week_number == now_week and str(el.date)[0:4] == str(datetime.now())[0:4]:
+            out_data.append(el)
+    return out_data.copy()
+
+
 def receive_and_pack(user_id, period):
     if userСategories.objects.filter(user_id=user_id).exists():
         all_debit_records = data.objects.filter(user_id=user_id).all()
@@ -36,10 +51,12 @@ def receive_and_pack(user_id, period):
     elif period == 'week':
         debit_dict = make_out_data_week(all_debit_records)
         credit_dict = make_out_data_week(all_credit_records)
-    median_credit = solve_median(credit_dict['amount'])
-    median_debit = solve_median(debit_dict['amount'])
+        all_debit_records = modificatio_for_week(all_debit_records)
+        all_credit_records = modificatio_for_week(all_credit_records)
     debit_hist = make_histogram(all_debit_records)
     credit_hist = make_histogram(all_credit_records)
+    median_credit = solve_median(credit_dict['amount'])
+    median_debit = solve_median(debit_dict['amount'])
     out_data = {"debit_dict": debit_dict,
                 "credit_dict": credit_dict,
                 "median_credit": median_credit,
@@ -62,7 +79,6 @@ def make_out_data_week(records):
     list_of_records_per_mounth = {'period': [],
                                   'amount': []
                                   }
-    weeks_list = {}
     for i in range(53):
         list_of_records_per_mounth['amount'].append(0)
         list_of_records_per_mounth['period'].append(i)
@@ -109,7 +125,8 @@ class histogram():
                                             'amount': []}
         for el in records:
             if not el.category in self._list_of_records_per_mounth['category']:
-                self._list_of_records_per_mounth['category'].append(el.category)
+                self._list_of_records_per_mounth['category'].append(
+                    el.category)
                 self._list_of_records_per_mounth['amount'].append(0)
 
     def solve_amount(self):
@@ -122,28 +139,27 @@ class histogram():
             for el in self._records:
                 if el.category == self._list_of_records_per_mounth['category'][i]:
                     category_amount += float(el.amount)
-            print(category_amount / self._summ)
             if category_amount / self._summ > 0.01:
                 self._list_of_records_per_mounth['amount'][i] = round(
                     category_amount)
             else:
                 self._list_of_records_per_mounth['amount'][i] = 0
                 self._summ_of_enother += float(el.amount)
-    
+
     def removing_small_values(self):
         value = None
         size = 0
-        while size != len(self._list_of_records_per_mounth['amount']) - 1:
+        while size != len(self._list_of_records_per_mounth['amount']):
             if self._list_of_records_per_mounth['amount'][size] == 0:
                 value = size
                 self._list_of_records_per_mounth['amount'].pop(size)
                 size += 1
-            size += 1 
+            size += 1
         if value != None:
             self._list_of_records_per_mounth['category'].pop(value)
             self._list_of_records_per_mounth['category'].append('другое')
-            self._list_of_records_per_mounth['amount'].append(self._summ_of_enother)
-                
+            self._list_of_records_per_mounth['amount'].append(
+                self._summ_of_enother)
 
     def get_histogram_data(self):
         return self._list_of_records_per_mounth.copy()

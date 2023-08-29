@@ -5,27 +5,29 @@ from django.db import models
 
 class data(models.Model):
 
-    
     user_id = models.CharField(max_length=30)
     date = models.CharField()
     category = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
-    
-    
+
     class Meta:
         verbose_name = 'Доход'
         verbose_name_plural = 'Доходы'
-        
+
     def record(form):
         try:
-            data.objects.create(user_id=form['user_id'],
-                            date=form['date'],
-                            category=form['category'], 
-                            amount=form['amount'])
+            record = data.objects.order_by('-id').all()[0]
+            new_id += record.id 
+            data.objects.create(
+                id = new_id,
+                user_id=form['user_id'],
+                date=form['date'],
+                category=form['category'],
+                amount=form['amount'])
             return True
         except:
             return False
-        
+
     def delete(request):
         try:
             id = int(request['record_id'])
@@ -33,33 +35,33 @@ class data(models.Model):
             return True
         except:
             return False
-    
-    
+
+
 class credit(models.Model):
     user_id = models.CharField(max_length=30)
     date = models.CharField()
     category = models.CharField(max_length=50)
     amount = models.DecimalField(max_digits=9, decimal_places=2)
     priority = models.IntegerField()
-    
+
     def __str__(self) -> str:
         return self.title
-    
+
     class Meta:
         verbose_name = 'Расход'
         verbose_name_plural = 'Расходы'
-        
+
     def record(form):
         try:
             credit.objects.create(user_id=form['user_id'],
-                            date=form['date'],
-                            category=form['category'], 
-                            amount=form['amount'], 
-                            priority = form['priority'])
+                                  date=form['date'],
+                                  category=form['category'],
+                                  amount=form['amount'],
+                                  priority=form['priority'])
             return True
         except:
             return False
-        
+
     def delete(request):
         try:
             id = int(request['record_id'])
