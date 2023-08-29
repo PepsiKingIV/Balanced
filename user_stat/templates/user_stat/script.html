@@ -10,8 +10,8 @@
     const barColors = ["red", "green","blue","orange","brown"];
 
     let creditData = [{% for el in credit_dict.amount %}{{el}},{% endfor %}];
-    let creditlabels = [{% for el in credit_dict.month %}{{el}},{% endfor %}];
-    let debitlabels = [{% for el in debit_dict.month %}{{el}},{% endfor %}];
+    let creditlabels = [{% for el in credit_dict.period %}{{el}},{% endfor %}];
+    let debitlabels = [{% for el in debit_dict.period %}{{el}},{% endfor %}];
     let debitData = [{% for el in debit_dict.amount %}{{el}},{% endfor %}];
     let debitHistCategory = [{% for el in hist_debit.category %}'{{el}}',{% endfor %}];
     let debitHistAmount = [{% for el in hist_debit.amount %}{{el}},{% endfor %}];
