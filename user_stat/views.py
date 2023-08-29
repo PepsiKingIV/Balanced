@@ -25,7 +25,6 @@ def month(request):
     median_debit = solve_median(debit_dict['amount'])
     debit_hist = make_histogram(all_debit_records)
     credit_hist = make_histogram(all_credit_records)
-    print(credit_dict)
     out_data = {"debit_dict": debit_dict,
                 "credit_dict": credit_dict,
                 "median_credit": median_credit,
@@ -61,17 +60,31 @@ def make_out_data(records):
 
 
 def make_histogram(records):
-    list_of_records_per_mounth = {'category': [],
-                                  'amount': []
-                                  }
+    list_of_records_per_mounth = {'category' : [],
+                                  'amount' : []}
     for el in records:
         if not el.category in list_of_records_per_mounth['category']:
             list_of_records_per_mounth['category'].append(el.category)
-    for i in list_of_records_per_mounth['category']:
-        summ = 0
+            list_of_records_per_mounth['amount'].append(0)
+    summ_of_enother = 0
+    summ = 0
+    for el in records:
+        summ += float(el.amount)
+    for i in range(len(list_of_records_per_mounth['category'])):
+        category_amount = 0
         for el in records:
-            if el.category == i:
-                summ += float(el.amount)
-                print(summ)
-                list_of_records_per_mounth['amount'].append(summ)
+            if el.category == list_of_records_per_mounth['category'][i]:
+                category_amount += float(el.amount)
+        if category_amount / summ > 0.01:
+            list_of_records_per_mounth['amount'][i] = round(category_amount)
+        else:
+            list_of_records_per_mounth['amount'][i] = 0
+            summ_of_enother += float(el.amount)
+    if not 'другое' in list_of_records_per_mounth['category']:
+        list_of_records_per_mounth['category'].append('другое')
+        list_of_records_per_mounth['amount'].append(round(summ_of_enother))
+    for i in range(len(list_of_records_per_mounth['amount'])):
+        if list_of_records_per_mounth['amount'][i - 1] == 0:
+            print(list_of_records_per_mounth['category'].pop(i - 1))
+            print(list_of_records_per_mounth['amount'].pop(i - 1))
     return list_of_records_per_mounth.copy()

@@ -19,7 +19,7 @@ def v_debit(request):
         if userСategories.objects.filter(user_id=user_id).exists():
             categoryJSON = userСategories.objects.filter(
                 user_id=user_id).values()[0]["category"]
-            form_1.add_choices(categoryJSON['credit'].copy())
+            form_1.add_choices(categoryJSON['debit'].copy())
         if request.method == 'POST':
             if 'date' in request.POST:
                 form_1 = debit_form(request.POST)
