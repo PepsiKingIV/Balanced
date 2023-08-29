@@ -13,42 +13,29 @@ def month(request):
     if request.user.is_authenticated:
         user_id = User.objects.filter(
             username=f'{request.user}').values()[0]['id']
-        categoryJSON = {}
-        if userСategories.objects.filter(user_id=user_id).exists():
-            categoryJSON = userСategories.objects.filter(
-                user_id=user_id).values()[0]["category"]
-            all_debit_records = data.objects.filter(user_id=user_id).all()
-            all_credit_records = credit.objects.filter(user_id=user_id).all()
-    debit_dict = make_out_data_month(all_debit_records)
-    credit_dict = make_out_data_month(all_credit_records)
-    median_credit = solve_median(credit_dict['amount'])
-    median_debit = solve_median(debit_dict['amount'])
-    debit_hist = make_histogram(all_debit_records)
-    credit_hist = make_histogram(all_credit_records)
-    print(debit_dict)
-    make_out_data_week(all_debit_records)
-    out_data = {"debit_dict": debit_dict,
-                "credit_dict": credit_dict,
-                "median_credit": median_credit,
-                "median_debit": median_debit,
-                "hist_debit": debit_hist,
-                "hist_credit": credit_hist
-                }
+    out_data = receive_and_pack(user_id=user_id, period='month')
     return render(request, 'user_stat/script.html', out_data)
 
+
 def week(request):
-    # period = 31 days
+    # period = 7 days
     if request.user.is_authenticated:
         user_id = User.objects.filter(
             username=f'{request.user}').values()[0]['id']
-        categoryJSON = {}
-        if userСategories.objects.filter(user_id=user_id).exists():
-            categoryJSON = userСategories.objects.filter(
-                user_id=user_id).values()[0]["category"]
-            all_debit_records = data.objects.filter(user_id=user_id).all()
-            all_credit_records = credit.objects.filter(user_id=user_id).all()
-    debit_dict = make_out_data_week(all_debit_records)
-    credit_dict = make_out_data_week(all_credit_records)
+        out_data = receive_and_pack(user_id=user_id, period='week')
+    return render(request, 'user_stat/script.html', out_data)
+
+
+def receive_and_pack(user_id, period):
+    if userСategories.objects.filter(user_id=user_id).exists():
+        all_debit_records = data.objects.filter(user_id=user_id).all()
+        all_credit_records = credit.objects.filter(user_id=user_id).all()
+    if period == 'month':
+        debit_dict = make_out_data_month(all_debit_records)
+        credit_dict = make_out_data_month(all_credit_records)
+    elif period == 'week':
+        debit_dict = make_out_data_week(all_debit_records)
+        credit_dict = make_out_data_week(all_credit_records)
     median_credit = solve_median(credit_dict['amount'])
     median_debit = solve_median(debit_dict['amount'])
     debit_hist = make_histogram(all_debit_records)
@@ -60,7 +47,7 @@ def week(request):
                 "hist_debit": debit_hist,
                 "hist_credit": credit_hist
                 }
-    return render(request, 'user_stat/script.html', out_data)
+    return out_data.copy()
 
 
 def solve_median(list_of_amounts):
@@ -69,6 +56,7 @@ def solve_median(list_of_amounts):
         median += i
     median /= len(list_of_amounts)
     return round(median, 2)
+
 
 def make_out_data_week(records):
     list_of_records_per_mounth = {'period': [],
@@ -84,10 +72,13 @@ def make_out_data_week(records):
             year = int(date[0:4])
             month = int(date[5:7])
             day = int(date[8:10])
-            week_number = int(datetime.date(datetime(year, month, day)).isocalendar()[1])
+            week_number = int(datetime.date(
+                datetime(year, month, day)).isocalendar()[1])
             if week_number == i:
-                list_of_records_per_mounth['amount'][i] += float(round(el.amount))
+                list_of_records_per_mounth['amount'][i] += float(
+                    round(el.amount))
     return list_of_records_per_mounth
+
 
 def make_out_data_month(records):
     list_of_records_per_mounth = {'period': [],
@@ -100,38 +91,75 @@ def make_out_data_month(records):
         summ = 0
         for el in records:
             if str(el.date)[0:4] == '2023' and str(el.date)[5:7] == i:
-                print(el.date)
                 summ += float(el.amount)
         list_of_records_per_mounth['amount'].append(round(summ))
     return list_of_records_per_mounth.copy()
 
 
-def make_histogram(records):
-    list_of_records_per_mounth = {'category' : [],
-                                  'amount' : []}
-    for el in records:
-        if not el.category in list_of_records_per_mounth['category']:
-            list_of_records_per_mounth['category'].append(el.category)
-            list_of_records_per_mounth['amount'].append(0)
-    summ_of_enother = 0
-    summ = 0
-    for el in records:
-        summ += float(el.amount)
-    for i in range(len(list_of_records_per_mounth['category'])):
-        category_amount = 0
+class histogram():
+    _list_of_records_per_mounth = {'category': [],
+                                   'amount': []}
+    _records = None
+    _summ = 0
+    _summ_of_enother = 0
+
+    def __init__(self, records) -> None:
+        self._records = records
+        self._list_of_records_per_mounth = {'category': [],
+                                            'amount': []}
         for el in records:
-            if el.category == list_of_records_per_mounth['category'][i]:
-                category_amount += float(el.amount)
-        if category_amount / summ > 0.01:
-            list_of_records_per_mounth['amount'][i] = round(category_amount)
-        else:
-            list_of_records_per_mounth['amount'][i] = 0
-            summ_of_enother += float(el.amount)
-    if not 'другое' in list_of_records_per_mounth['category']:
-        list_of_records_per_mounth['category'].append('другое')
-        list_of_records_per_mounth['amount'].append(round(summ_of_enother))
-    for i in range(len(list_of_records_per_mounth['amount'])):
-        if list_of_records_per_mounth['amount'][i - 1] == 0:
-            print(list_of_records_per_mounth['category'].pop(i - 1))
-            print(list_of_records_per_mounth['amount'].pop(i - 1))
-    return list_of_records_per_mounth.copy()
+            if not el.category in self._list_of_records_per_mounth['category']:
+                self._list_of_records_per_mounth['category'].append(el.category)
+                self._list_of_records_per_mounth['amount'].append(0)
+
+    def solve_amount(self):
+        for el in self._records:
+            self._summ += float(el.amount)
+
+    def populating_lists(self):
+        for i in range(len(self._list_of_records_per_mounth['category'])):
+            category_amount = 0
+            for el in self._records:
+                if el.category == self._list_of_records_per_mounth['category'][i]:
+                    category_amount += float(el.amount)
+            print(category_amount / self._summ)
+            if category_amount / self._summ > 0.01:
+                self._list_of_records_per_mounth['amount'][i] = round(
+                    category_amount)
+            else:
+                self._list_of_records_per_mounth['amount'][i] = 0
+                self._summ_of_enother += float(el.amount)
+    
+    def removing_small_values(self):
+        value = None
+        size = 0
+        while size != len(self._list_of_records_per_mounth['amount']) - 1:
+            if self._list_of_records_per_mounth['amount'][size] == 0:
+                value = size
+                self._list_of_records_per_mounth['amount'].pop(size)
+                size += 1
+            size += 1 
+        if value != None:
+            self._list_of_records_per_mounth['category'].pop(value)
+            self._list_of_records_per_mounth['category'].append('другое')
+            self._list_of_records_per_mounth['amount'].append(self._summ_of_enother)
+                
+
+    def get_histogram_data(self):
+        return self._list_of_records_per_mounth.copy()
+
+    def clear(self):
+        self._list_of_records_per_mounth.clear()
+        self._summ = 0
+        self._records = None
+        self._summ_of_enother = 0
+
+
+def make_histogram(records):
+    hist = histogram(records)
+    hist.solve_amount()
+    hist.populating_lists()
+    hist.removing_small_values()
+    out = hist.get_histogram_data()
+    hist.clear()
+    return out
