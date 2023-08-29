@@ -56,7 +56,7 @@ def v_credit(request):
             form_1.add_choices(categoryJSON['credit'].copy())
         if request.method == 'POST':
             if 'date' in request.POST:
-                form_1 = debit_form(request.POST)
+                form_1 = credit_form(request.POST)
                 if form_1.is_valid():
                     db_form = form_1.create_db_form(user_id, request)
                     credit.record(form=db_form)

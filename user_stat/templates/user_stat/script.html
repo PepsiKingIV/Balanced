@@ -13,7 +13,10 @@
     let creditlabels = [];
     let debitlabels = [];
     let debitData = [];
-
+    let debitHistCategory = [];
+    let debitHistAmount = [];
+    let creditHistCategory = [];
+    let creditHistAmount = [];
 
     {% for el in debit_dict.amount %}
         debitData.push({{el}});
@@ -30,10 +33,6 @@
     {% for el in credit_dict.month %}
         creditlabels.push({{el}});
     {% endfor %}
-
-    
-
-
 
     new Chart("Chart_1", {
     type: 'doughnut',

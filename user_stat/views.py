@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+import json
 from account.models import userСategories
 from django.contrib.auth.models import User
 from debit.models import data, credit
@@ -24,15 +25,15 @@ def month(request):
     median_debit = solve_median(debit_dict['amount'])
     debit_hist = make_histogram(all_debit_records)
     credit_hist = make_histogram(all_credit_records)
-    print(debit_hist)
-    print(credit_hist)
-    return render(request, 'user_stat/script.html', {"debit_dict" : debit_dict,
-                                                     "credit_dict" : credit_dict,
-                                                     "median_credit" : median_credit,
-                                                     "median_debit" : median_debit,
-                                                     "debit_hist" : debit_hist,
-                                                     "credit_hist" : credit_hist
-                                                     })
+    print(credit_dict)
+    out_data = {"debit_dict": debit_dict,
+                "credit_dict": credit_dict,
+                "median_credit": median_credit,
+                "median_debit": median_debit,
+                "hist_debit": debit_hist,
+                "hist_credit": credit_hist
+                }
+    return render(request, 'user_stat/script.html', out_data)
 
 
 def solve_median(list_of_amounts):
@@ -56,13 +57,13 @@ def make_out_data(records):
             if str(el.date)[0:4] == '2023' and str(el.date)[5:7] == i:
                 summ += float(el.amount)
         list_of_records_per_mounth['amount'].append(summ)
-    return list_of_records_per_mounth
+    return list_of_records_per_mounth.copy()
 
 
 def make_histogram(records):
     list_of_records_per_mounth = {'category': [],
-                                 'amount': []
-                                 }
+                                  'amount': []
+                                  }
     for el in records:
         if not el.category in list_of_records_per_mounth['category']:
             list_of_records_per_mounth['category'].append(el.category)
@@ -73,5 +74,4 @@ def make_histogram(records):
                 summ += float(el.amount)
                 print(summ)
                 list_of_records_per_mounth['amount'].append(summ)
-    return list_of_records_per_mounth
-                
+    return list_of_records_per_mounth.copy()
