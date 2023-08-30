@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class userСategories(models.Model):
     user_id = models.CharField(max_length=30, name='user_id')
@@ -12,3 +13,10 @@ class userСategories(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
     
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE)
+    email_verify = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.user.username

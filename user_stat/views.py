@@ -67,9 +67,8 @@ def modification_for_day(records):
     return out_data.copy()
 
 def receive_and_pack(user_id, period):
-    if userСategories.objects.filter(user_id=user_id).exists():
-        all_debit_records = data.objects.filter(user_id=user_id).all()
-        all_credit_records = credit.objects.filter(user_id=user_id).all()
+    all_debit_records = data.objects.filter(user_id=user_id).all()
+    all_credit_records = credit.objects.filter(user_id=user_id).all()
     if period == 'month':
         debit_dict = make_out_data_month(all_debit_records)
         credit_dict = make_out_data_month(all_credit_records)
@@ -107,11 +106,11 @@ def make_out_data_day(records):
     list_of_records_per_mounth = {'period': [],
                                   'amount': []
                                   }
-    for i in range(31):
+    for i in range(32):
         list_of_records_per_mounth['amount'].append(0)
         list_of_records_per_mounth['period'].append(i)
     for el in records:
-        for i in range(31):
+        for i in range(32):
             date = str(el.date)
             day = int(date[8:10])
             if day == i:
