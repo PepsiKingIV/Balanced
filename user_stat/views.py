@@ -13,9 +13,10 @@ def month(request):
     if request.user.is_authenticated:
         user_id = User.objects.filter(
             username=f'{request.user}').values()[0]['id']
-    out_data = receive_and_pack(user_id=user_id, period='month')
+        out_data = receive_and_pack(user_id=user_id, period='month')
+    else:
+        out_data = {}
     return render(request, 'user_stat/script.html', out_data)
-
 
 def week(request):
     # period = 7 days
@@ -23,10 +24,21 @@ def week(request):
         user_id = User.objects.filter(
             username=f'{request.user}').values()[0]['id']
         out_data = receive_and_pack(user_id=user_id, period='week')
+    else:
+        out_data = {}
     return render(request, 'user_stat/script.html', out_data)
 
+def day(request):
+    # period = 1 days
+    if request.user.is_authenticated:
+        user_id = User.objects.filter(
+            username=f'{request.user}').values()[0]['id']
+        out_data = receive_and_pack(user_id=user_id, period='day')
+    else:
+        out_data = {}
+    return render(request, 'user_stat/script.html', out_data)
 
-def modificatio_for_week(records):
+def modification_for_week(records):
     now_week = datetime.now().isocalendar()[1]
     out_data = []
     for el in records:
@@ -40,6 +52,19 @@ def modificatio_for_week(records):
             out_data.append(el)
     return out_data.copy()
 
+def modification_for_day(records):
+    now_day = str(datetime.now())[5:7]
+    out_data = []
+    for el in records:
+        date = str(el.date)
+        year = int(date[0:4])
+        month = int(date[5:7])
+        day = int(date[8:10])
+        day_number = int(str(datetime.date(
+            datetime(year, month, day)))[5:7])
+        if day_number == now_day and str(el.date)[0:4] == str(datetime.now())[0:4]:
+            out_data.append(el)
+    return out_data.copy()
 
 def receive_and_pack(user_id, period):
     if userСategories.objects.filter(user_id=user_id).exists():
@@ -51,8 +76,13 @@ def receive_and_pack(user_id, period):
     elif period == 'week':
         debit_dict = make_out_data_week(all_debit_records)
         credit_dict = make_out_data_week(all_credit_records)
-        all_debit_records = modificatio_for_week(all_debit_records)
-        all_credit_records = modificatio_for_week(all_credit_records)
+        all_debit_records = modification_for_week(all_debit_records)
+        all_credit_records = modification_for_week(all_credit_records)
+    elif period == 'day':
+        debit_dict = make_out_data_day(all_debit_records)
+        credit_dict = make_out_data_day(all_credit_records)
+        all_debit_records = modification_for_day(all_debit_records)
+        all_credit_records = modification_for_day(all_credit_records)
     debit_hist = make_histogram(all_debit_records)
     credit_hist = make_histogram(all_credit_records)
     median_credit = solve_median(credit_dict['amount'])
@@ -66,13 +96,28 @@ def receive_and_pack(user_id, period):
                 }
     return out_data.copy()
 
-
 def solve_median(list_of_amounts):
     median = 0
     for i in list_of_amounts:
         median += i
     median /= len(list_of_amounts)
     return round(median, 2)
+
+def make_out_data_day(records):
+    list_of_records_per_mounth = {'period': [],
+                                  'amount': []
+                                  }
+    for i in range(31):
+        list_of_records_per_mounth['amount'].append(0)
+        list_of_records_per_mounth['period'].append(i)
+    for el in records:
+        for i in range(31):
+            date = str(el.date)
+            day = int(date[8:10])
+            if day == i:
+                list_of_records_per_mounth['amount'][i] += float(
+                    round(el.amount))
+    return list_of_records_per_mounth
 
 
 def make_out_data_week(records):
@@ -94,7 +139,6 @@ def make_out_data_week(records):
                 list_of_records_per_mounth['amount'][i] += float(
                     round(el.amount))
     return list_of_records_per_mounth
-
 
 def make_out_data_month(records):
     list_of_records_per_mounth = {'period': [],

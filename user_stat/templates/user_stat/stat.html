@@ -11,7 +11,7 @@
                 <button type="button" class="btn btn-outline-secondary">1 неделя</button>
             </a>
           
-            <a class='button-link' href='#'>
+            <a class='button-link' href='http://127.0.0.1:8000/statistics/day'>
                 <button type="button" class="btn btn-outline-secondary">1 день</button>
             </a>          
         </div>
@@ -23,13 +23,18 @@
             <canvas id="Chart_3" style="width:100%;max-width:600px"></canvas>
             <p>В среднем доходы за период: {{ median_debit }}</p>
         </div>
+        
         <div class="twocol">
+            {% if hist_debit.amount %}
             <div class="form" style="border-color: #136F63;">
                 <canvas id="Chart_1" style="width:100%;max-width:600px"></canvas>
             </div>
+            {% endif %}
+            {% if hist_credit.amount %}
             <div class="form" style="border-color: #3772FF; background-color: #000">
                 <canvas id="Chart_2" style="width:100%;max-width:600px"></canvas>
             </div>
+            {% endif %}
         </div>
         {% block script_debit %}
         {% endblock script_debit %}

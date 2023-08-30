@@ -6,5 +6,5 @@ urlpatterns = [
     path('', views.month),
     path('month/', views.month),
     path('week/', views.week),
-    # path('day/', views.day),
+    path('day/', views.day),
 ]

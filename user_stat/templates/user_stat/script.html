@@ -5,10 +5,6 @@
 
 
 <script type="text/javascript">
-    const xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-    const yValues = [55, 49, 44, 24, 15];
-    const barColors = ["red", "green","blue","orange","brown"];
-
     let creditData = [{% for el in credit_dict.amount %}{{el}},{% endfor %}];
     let creditlabels = [{% for el in credit_dict.period %}{{el}},{% endfor %}];
     let debitlabels = [{% for el in debit_dict.period %}{{el}},{% endfor %}];

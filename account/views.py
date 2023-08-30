@@ -88,3 +88,6 @@ def new_token(request):
     old_token = User.objects.filter(username=f'{request.user}').values()[0]['first_name']
     User.objects.filter(first_name=old_token).update(first_name=token)
     return redirect(to='http://127.0.0.1:8000/account/login/')
+
+
+#чтобы ограничить количество писем в минуту можно сделать асихронную функцию, которая будет ждать какое-то время и после разрешать повторную отправку
