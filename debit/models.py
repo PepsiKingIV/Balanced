@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 
 class data(models.Model):
-
+    id = models.IntegerField(primary_key=True)
     user_id = models.CharField(max_length=30)
     date = models.CharField()
     category = models.CharField(max_length=100)
@@ -17,15 +17,16 @@ class data(models.Model):
     def record(form):
         try:
             record = data.objects.order_by('-id').all()[0]
-            new_id += record.id 
+            new_id = record.id + 1
             data.objects.create(
-                id = new_id,
+                id=new_id,
                 user_id=form['user_id'],
                 date=form['date'],
                 category=form['category'],
                 amount=form['amount'])
             return True
-        except:
+        except Exception as e:
+            print(e)
             return False
 
     def delete(request):
@@ -38,6 +39,7 @@ class data(models.Model):
 
 
 class credit(models.Model):
+    id = models.IntegerField(primary_key=True)
     user_id = models.CharField(max_length=30)
     date = models.CharField()
     category = models.CharField(max_length=50)
@@ -53,11 +55,15 @@ class credit(models.Model):
 
     def record(form):
         try:
-            credit.objects.create(user_id=form['user_id'],
-                                  date=form['date'],
-                                  category=form['category'],
-                                  amount=form['amount'],
-                                  priority=form['priority'])
+            record = data.objects.order_by('-id').all()[0]
+            new_id = record.id + 1
+            credit.objects.create(
+                id = new_id,
+                user_id=form['user_id'],
+                date=form['date'],
+                category=form['category'],
+                amount=form['amount'],
+                priority=form['priority'])
             return True
         except:
             return False
