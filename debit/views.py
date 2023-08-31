@@ -3,18 +3,22 @@ from .models import data, credit
 from django.contrib.auth.models import User
 from .forms import debit_form, credit_form, category, delete_record
 from account.models import userСategories
+from account.models import Profile
 
 
-from account.models import userСategories
+def check_email_verify(user_id):
+    return Profile.objects.filter(user_id=user_id).values()[0]['email_verify']
 
 
 def v_debit(request):
     form_1 = debit_form()
     form_2 = category()
     form_3 = delete_record()
-    if request.user.is_authenticated:
+    if_verify = False
+    if request.user.is_authenticated :
         user_id = User.objects.filter(
             username=f'{request.user}').values()[0]['id']
+        if_verify = check_email_verify(user_id)
         categoryJSON = {}
         if userСategories.objects.filter(user_id=user_id).exists():
             categoryJSON = userСategories.objects.filter(
@@ -39,16 +43,23 @@ def v_debit(request):
                 data.delete(request=request.POST)
                 return redirect(to='http://127.0.0.1:8000/data/debit')
     records = data.objects.all().order_by('-id')
-    return render(request, 'debit/debit.html', {'debit_form': form_1, 'category_form': form_2, 'delete_form': form_3, 'records': records})
+    return render(request, 'debit/debit.html', {'debit_form': form_1, 
+                                                'category_form': form_2, 
+                                                'delete_form': form_3, 
+                                                'records': records,
+                                                'verify': if_verify
+                                                })
 
 
 def v_credit(request):
     form_1 = credit_form()
     form_2 = category()
     form_3 = delete_record()
+    if_verify = False
     if request.user.is_authenticated:
         user_id = User.objects.filter(
             username=f'{request.user}').values()[0]['id']
+        if_verify = check_email_verify(user_id)
         categoryJSON = {}
         if userСategories.objects.filter(user_id=user_id).exists():
             categoryJSON = userСategories.objects.filter(
@@ -73,4 +84,9 @@ def v_credit(request):
                 credit.delete(request=request.POST)
                 return redirect(to='http://127.0.0.1:8000/data/credit')
     records = credit.objects.all().order_by('-id')
-    return render(request, 'debit/credit.html', {'debit_form': form_1, 'category_form': form_2, 'delete_form': form_3, 'records': records})
+    return render(request, 'debit/credit.html', {'debit_form': form_1, 
+                                                 'category_form': form_2, 
+                                                 'delete_form': form_3, 
+                                                 'records': records,
+                                                 'verify': if_verify
+                                                 })

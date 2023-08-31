@@ -2,9 +2,9 @@
 
 
 {% block content%}
-{% if request.user.is_authenticated %}
+{% if request.user.is_authenticated and verify %}
 <div>
-    <div class="form" style="border-color: #840032;">
+    <div class="form" style="border-color: #136F63;">
       <form method='post'>
         <p style="font-size: 1.5rem;">Добавить категорию </p>
         {% csrf_token %} 
@@ -12,7 +12,7 @@
         <button type="submit" class="btn btn-outline-success" style="margin-top: 1rem;">Добавить</button>
       </form>
     </div>
-    <div class="form" style="border-color: #226f54;">
+    <div class="form" style="border-color: #D00000;">
         <p style="font-size: 1.5rem;">Создание</p>
         <form method='post'>
           {% csrf_token %} 
@@ -30,11 +30,11 @@
           {{ debit_form.priority }}
           <button type="submit" class="btn btn-outline-success" style="margin-top: 1rem;">Создать запись</button>
           <a href='http://127.0.0.1:8000/data/credit/'>
-          <button type="button" class="btn btn-outline-secondary" style="margin-top: 1rem;">пропали категории</button>
+          <button type="button" class="btn btn-outline-secondary" style="margin-top: 1rem;">Обновить категории</button>
           </a>
         </form>
     </div>
-    <div class="form" style="border-color: #FFBA08; height: 300px">
+    <div class="form" style="border-color: #D05CD6; height: 300px">
         <p style="font-size: 1.5rem;">Ваши записи</p>
         <div class="table-responsive" style="overflow: auto; height: 200px; border-radius: 1rem">
             <table class="table table-dark", style="background-color: #1a1a1a">
@@ -61,7 +61,7 @@
               </table> 
           </div>
     </div>
-    <div class="form" style="border-color: #D00000;">
+    <div class="form" style="border-color: #FFBA08;">
         <p style="font-size: 1.5rem;">Удаление</p>
         <form method='post'>
           {% csrf_token %}

@@ -5,8 +5,13 @@ from account.models import userСategories
 from django.contrib.auth.models import User
 from debit.models import data, credit
 from datetime import datetime
+from account.models import Profile
 
 
+
+def check_email_verify(user_id):
+    return Profile.objects.filter(user_id=user_id).values()[0]['email_verify']
+    
 # Create your views here.
 def month(request):
     # period = 31 days
@@ -38,7 +43,7 @@ def day(request):
         out_data = {}
     return render(request, 'user_stat/script.html', out_data)
 
-def modification_for_week(records):
+def modification_for_week(records) -> list:
     now_week = datetime.now().isocalendar()[1]
     out_data = []
     for el in records:
@@ -52,7 +57,7 @@ def modification_for_week(records):
             out_data.append(el)
     return out_data.copy()
 
-def modification_for_day(records):
+def modification_for_day(records) -> list:
     now_day = str(datetime.now())[5:7]
     out_data = []
     for el in records:
@@ -66,7 +71,7 @@ def modification_for_day(records):
             out_data.append(el)
     return out_data.copy()
 
-def receive_and_pack(user_id, period):
+def receive_and_pack(user_id, period) -> dict:
     all_debit_records = data.objects.filter(user_id=user_id).all()
     all_credit_records = credit.objects.filter(user_id=user_id).all()
     if period == 'month':
@@ -86,12 +91,14 @@ def receive_and_pack(user_id, period):
     credit_hist = make_histogram(all_credit_records)
     median_credit = solve_median(credit_dict['amount'])
     median_debit = solve_median(debit_dict['amount'])
+    is_verify = check_email_verify(user_id)
     out_data = {"debit_dict": debit_dict,
                 "credit_dict": credit_dict,
                 "median_credit": median_credit,
                 "median_debit": median_debit,
                 "hist_debit": debit_hist,
-                "hist_credit": credit_hist
+                "hist_credit": credit_hist,
+                "verify": is_verify,
                 }
     return out_data.copy()
 

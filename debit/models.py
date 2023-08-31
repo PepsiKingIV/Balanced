@@ -16,8 +16,11 @@ class data(models.Model):
 
     def record(form):
         try:
-            record = data.objects.order_by('-id').all()[0]
-            new_id = record.id + 1
+            if data.objects.exists():
+                record = data.objects.order_by('-id').all()[0]
+                new_id = record.id + 1
+            else:
+                new_id = 1
             data.objects.create(
                 id=new_id,
                 user_id=form['user_id'],
@@ -55,8 +58,11 @@ class credit(models.Model):
 
     def record(form):
         try:
-            record = data.objects.order_by('-id').all()[0]
-            new_id = record.id + 1
+            if credit.objects.exists():
+                record = credit.objects.order_by('-id').all()[0]
+                new_id = record.id + 1
+            else:
+                new_id = 1
             credit.objects.create(
                 id = new_id,
                 user_id=form['user_id'],

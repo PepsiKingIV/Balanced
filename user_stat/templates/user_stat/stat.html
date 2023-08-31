@@ -1,7 +1,7 @@
 {% extends "user_stat/pattern.html" %}
 
 {% block content%}
-{% if request.user.is_authenticated %}
+{% if request.user.is_authenticated and verify %}
     <div>
         <div style="margin-left: 1rem; margin-bottom: 1rem;">
             <a class='button-link' href='http://127.0.0.1:8000/statistics/month'>
@@ -15,23 +15,23 @@
                 <button type="button" class="btn btn-outline-secondary">1 день</button>
             </a>          
         </div>
-        <div class="form" style="border-color: #FFBA08;">
+        <div class="form" style="border-color: #D05CD6;">
             <canvas id="Chart_4" style="width:100%;max-width:600px"></canvas>
             <p>В среднем расходы за период: {{ median_credit }} </p>
         </div>
-        <div class="form" style="border-color: #FFBA08;">
+        <div class="form" style="border-color: #5A189A;">
             <canvas id="Chart_3" style="width:100%;max-width:600px"></canvas>
             <p>В среднем доходы за период: {{ median_debit }}</p>
         </div>
         
         <div class="twocol">
             {% if hist_debit.amount %}
-            <div class="form" style="border-color: #136F63;">
+            <div class="form" style="border-color: #FFBA08;">
                 <canvas id="Chart_1" style="width:100%;max-width:600px"></canvas>
             </div>
             {% endif %}
             {% if hist_credit.amount %}
-            <div class="form" style="border-color: #3772FF; background-color: #000">
+            <div class="form" style="border-color: #E85D04;">
                 <canvas id="Chart_2" style="width:100%;max-width:600px"></canvas>
             </div>
             {% endif %}

@@ -19,6 +19,9 @@ body {
     height: 80vh;
 }
 
+.message{display:none;}
+
+
 .content>div{
     margin-top: 1rem;
     grid-row: 1/6;
