@@ -46,50 +46,47 @@ class EmailVerify(View):
             print(user.id)
             Profile.objects.filter(user_id=user.id).update(email_verify=True)
             login(request, user)
-            return redirect(to='http://127.0.0.1:8000/account/login/')
+            return redirect(to='http://127.0.0.1:8000/account/dashboard/')
         else:
             return redirect('http://127.0.0.1:8000/account/invalid_verify')
 
-    
+        
+def user_menu(request):
+    token = User.objects.filter(username=request.user).values()[0]['first_name']
+    return render(request, 'account/dashboard.html', {'token': token})
 
+ 
 def user_login(request):
+    if request.user.is_authenticated:
+        return redirect(to='http://127.0.0.1:8000/account/dashboard/')
     data = ''
-    if request.method == 'POST':
-        token = secrets.token_urlsafe()
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            user_data = form.cleaned_data
-            user = authenticate(
-                username=user_data['username'], password=user_data['password'])
-            print(user)
-            if user is not None:
-                username = User.objects.filter(username=request.POST['username']).all()[0]
-                user_id = User.objects.filter(username=username).values()[0]['id']
-                Profile.objects.filter(user_id=user_id).values()[0]['email_verify']
-                if user.is_active and Profile.objects.filter(user_id=user_id).values()[0]['email_verify']:
-                    login(request, user)
-                    Profile.objects.filter(user_id=user_id).update(number_of_emails=0)
-                    if not Profile.objects.filter(user_id=user_id).exists():
-                        u = Profile.objects.create(user_id=user_id, telegram_id='tel_id', category = {'debit': [], 'credit':[]})
-                    data = 'Успешно'
-                else:
-                    number_of_emails = Profile.objects.filter(user_id=user_id).values()[0]['number_of_emails']
-                    send_email_for_verify(request, user)
-                    number_of_emails += 1
-                    Profile.objects.filter(user_id=user_id).update(number_of_emails=number_of_emails)
-                    if number_of_emails > 10:
-                        User.objects.filter(id=user_id).update(is_active = False)
-                    data = 'Вы не прошли верификацию по почте. На вашу почту было отправлено новое сообщение'
+    form = LoginForm(request.POST)
+    if form.is_valid():
+        user_data = form.cleaned_data
+        user = authenticate(
+            username=user_data['username'], password=user_data['password'])
+        if user is not None:
+            user_data = User.objects.filter(username=request.POST['username']).values()[0]
+            user_id = user_data['id']
+            profile_data = Profile.objects.filter(user_id=user_id).values()[0]
+            if user.is_active and profile_data['email_verify']:
+                login(request, user)
+                profile_data.update(number_of_emails=0)
+                if not Profile.objects.filter(user_id=user_id).exists():
+                    Profile.objects.create(user_id=user_id, telegram_id='tel_id', category = {'debit': [], 'credit':[]})
+                return redirect(to='http://127.0.0.1:8000/account/dashboard/')
             else:
-                data = 'Неверный логин либо пароль'
-            form = LoginForm()
-    else:
+                number_of_emails = profile_data['number_of_emails']
+                send_email_for_verify(request, user)
+                number_of_emails += 1
+                Profile.objects.filter(user_id=user_id).update(number_of_emails=number_of_emails)
+                if number_of_emails > 10:
+                    User.objects.filter(id=user_id).update(is_active = False)
+                data = 'Вы не прошли верификацию по почте. На вашу почту было отправлено новое сообщение'
+        else:
+            data = 'Неверный логин либо пароль'
         form = LoginForm()
-        try:
-            token = User.objects.filter(username=f'{request.user}').values()[0]['first_name']
-        except:
-            token = 'none'
-    return render(request, 'account/login.html', {'form': form, 'data': data, 'token': token})
+    return render(request, 'account/login.html', {'form': form, 'data': data})
 
 
 def send_email_for_verify(request, user, number_of_emails = 0):
@@ -162,4 +159,4 @@ def new_token(request):
     token = secrets.token_urlsafe()
     old_token = User.objects.filter(username=f'{request.user}').values()[0]['first_name']
     User.objects.filter(first_name=old_token).update(first_name=token)
-    return redirect(to='http://127.0.0.1:8000/account/login/')
+    return redirect(to='http://127.0.0.1:8000/account/dashboard/')
