@@ -1,5 +1,4 @@
 from django import forms
-from account.models import userСategories
 
 
 class debit_form(forms.Form):

@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 import json
-from account.models import userСategories
 from django.contrib.auth.models import User
 from debit.models import data, credit
 from datetime import datetime

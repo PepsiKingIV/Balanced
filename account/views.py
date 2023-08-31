@@ -16,7 +16,7 @@ from django.contrib.auth.tokens import default_token_generator as token_generato
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user
 from . import forms
-from .models import userСategories, Profile
+from .models import Profile
 import secrets, time
 from threading import Thread
 
@@ -69,8 +69,8 @@ def user_login(request):
                 if user.is_active and Profile.objects.filter(user_id=user_id).values()[0]['email_verify']:
                     login(request, user)
                     Profile.objects.filter(user_id=user_id).update(number_of_emails=0)
-                    if not userСategories.objects.filter(user_id=user_id).exists():
-                        u = userСategories.objects.create(user_id=user_id, telegram_id='tel_id', category = {'debit': [], 'credit':[]})
+                    if not Profile.objects.filter(user_id=user_id).exists():
+                        u = Profile.objects.create(user_id=user_id, telegram_id='tel_id', category = {'debit': [], 'credit':[]})
                     data = 'Успешно'
                 else:
                     number_of_emails = Profile.objects.filter(user_id=user_id).values()[0]['number_of_emails']
