@@ -82,10 +82,6 @@ body>nav>div>a:hover {
     color: #fff;
 }
 
-.navbar {
-    height: 5rem;
-}
-
 
 .nav-link:hover {
     color: #198754;
@@ -144,6 +140,11 @@ body>nav>div>a:hover {
         border-radius: 1rem;
         padding: 0rem;
         overflow: auto;
+        padding-top: 1rem;
+    }
+
+    .btn{
+        margin-bottom: 1rem;
     }
 
     .list-group{

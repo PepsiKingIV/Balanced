@@ -22,7 +22,7 @@
             <a class="navbar-brand" href="http://127.0.0.1:8000/" {% block page1 %}{% endblock page1%}>Balanced</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"><img src="list.svg" alt="" style="width: 2.5rem;"></span>
+                <span class="navbar-toggler-icon"><img src="{% static "svg/list.svg" %}" alt="" style="width: 2.5rem;"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
@@ -48,6 +48,7 @@
         
         {% endblock content %}
     </div>
+    <script src="{% static "scripts/copy.js" %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>

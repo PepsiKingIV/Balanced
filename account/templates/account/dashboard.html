@@ -10,10 +10,13 @@
                     Чтобы привязать аккаунт на сайте к аккаунту телеграма необходимо:
                 </p>
                 <dl>
-                    <dd>1. Перейти по ссылке: <a href="https://web.telegram.org/k/#@Ba1ancedbot">Telegram</a></li>
-                    <dd>2. Написать следующее сообщение: /bind</li>
-                    <dd>3. Когда от бота последует ответ на сообщение нужно отправить ему токен (никому не сообщайте токен)</li>
-                    <dd>4. Токен:<div style="font-size: 0.8rem">{{ token }}</div></li>
+                    <dd>1. Перейти по ссылке: <a href="https://web.telegram.org/k/#@Ba1ancedbot">Telegram</a></dd>
+                    <dd>2. Написать следующее сообщение: /bind</dd>
+                    <dd>3. Когда от бота последует ответ на сообщение нужно отправить ему токен (никому не сообщайте токен)</dd>
+                    <dd>4. Токен:
+                        <div style="font-size: 0.8rem" id='mybutton'>
+                            {{token}}
+                    </div></dd>
                 </dl>
 
                 <a href="http://127.0.0.1:8000/account/generate-new-token/" style="margin-top: 1rem">
