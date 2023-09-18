@@ -77,12 +77,12 @@ body>nav>div>a:hover {
     .content{
         display: grid;
         grid-template-rows: repeat(8, 1fr);
-        height: 80vh;
+        height: 600px;
         padding: 1rem;
     }
 
     .content>div{
-        background-color: rgb(26, 26, 26);
+        background-color: #000;
         grid-column: 1/4;
         height: 110%;
         border-radius: 1rem;

@@ -14,6 +14,37 @@
     <link rel="stylesheet" href="{% static "css/style.css" %}">
    
     <title>Balanced</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js" data-cfasync="false"></script>
+    <script>
+    window.addEventListener('load', function(){
+    window.cookieconsent.initialise({
+    revokeBtn: "<div class='cc-revoke'></div>",
+    type: "opt-in",
+    theme: "classic",
+    palette: {
+        popup: {
+            background: "#000",
+            text: "#fff"
+            },
+        button: {
+            background: "#3772FF",
+            text: "#000"
+            }
+        },
+    content: {
+        message: "Продолжая пользоваться сайтом вы даете согласие на использование файлов cookies и пользовательских данных для идентификации пользователя и ведения статистики посещения сайта. Если вы не хотите, чтобы Ваши вышеперечисленные данные обрабатывались, просим отключить обработку файлов cookies и сбор пользовательских данных в настройках Вашего браузера или покинуть сайт",
+        allow: "Принять",
+        deny: "Принять, но другая кнопка",
+        href: "consent/"
+        },
+        onInitialise: function(status) {
+        if(status == cookieconsent.status.allow) myScripts();
+        },
+        
+    })
+    });
+</script>
 </head>
 
 <body>

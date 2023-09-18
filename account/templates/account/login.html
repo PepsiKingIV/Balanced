@@ -3,7 +3,7 @@
 {% block content %}
     
 <div class="form">
-    <form method='post'>
+    <form method='post' class='form_field'>
         {% csrf_token %}
         <div class="mb-3">
             <label for="exampleInputText" class="form-label">Имя</label>
@@ -23,7 +23,7 @@
         </div>
         <p style="margin-top: 0.5rem; color: {% if data == 'Успешно' %} #38b000  {% else %} #ba181b{% endif %}"> {{data}}</p>
     </form>
-    <a href="{% url "password_reset" %}" style="margin-top: 1rem">
+    <a href="{% url "password_reset" %}" class"pass_reset_btn">
         <button type="button" class="btn btn-outline-secondary">Восстановить пароль</button>
     </a>
 </div>

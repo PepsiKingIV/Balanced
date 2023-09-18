@@ -1,0 +1,55 @@
+{% extends 'debit/pattern.html' %} 
+
+{% block content%} 
+{% if request.user.is_authenticated and verify %}
+<div>
+  <div class="form" style="font-size: 1.5rem; border-color: #000;">Добавить/удалить категории</div>
+  <div class="form" style="border-color: #000">
+    <p style="font-size: 1.5rem"></p>
+    <form method="post">
+      {% csrf_token %}
+      <label for="startDate" style="margin-bottom: 0.5rem">Доход</label>
+      {{ debit_form.category }}
+      <button
+        type="submit"
+        class="btn btn-outline-success"
+        style="margin-top: 1rem"
+      >
+        Добавить категорию
+      </button>
+    </form>
+  </div>
+  <div class="form" style="border-color: #000">
+    <p style="font-size: 1.5rem"></p>
+    <form method="post">
+      {% csrf_token %}
+      <label for="startDate" style="margin-bottom: 0.5rem">Расход</label>
+      {{ credit_form.category }}
+      <button
+        type="submit"
+        class="btn btn-outline-success"
+        style="margin-top: 1rem"
+      >
+        Добавить категорию
+      </button>
+    </form>
+  </div>
+  <div class="form" style="border-color: #000">
+    <p style="font-size: 1.5rem"></p>
+    <form method="post">
+      {% csrf_token %}
+      <label for="startDate" style="margin-bottom: 0.5rem">Удаление категории дохода</label>
+      {{ credit_form.category }}
+      <button
+        type="submit"
+        class="btn btn-outline-success"
+        style="margin-top: 1rem"
+      >
+        Добавить категорию
+      </button>
+    </form>
+  </div>
+  <div></div>
+  {% endif %} 
+{% endblock %}
+</div>
