@@ -26,10 +26,21 @@
           </div>
           <label for="startDate" style="margin-bottom: 0.5rem;">Категория</label>
           {{ debit_form.category }}
+          <script>
+            let debit_category = [{%for i in debit_categories%}'{{i}}',{%endfor%}];
+            let select = document.getElementById('id_category')
+          
+            for(let i in debit_category){
+              let elem = document.createElement('option');
+              elem.innerHTML = `${debit_category[i]}`
+              elem.value = `${debit_category[i]}`
+              select.append(elem)
+            }
+          </script>
           <button type="submit" class="btn btn-outline-success" style="margin-top: 1rem;">Создать запись</button>
           <a href='http://127.0.0.1:8000/data/debit/'>
             <button type="button" class="btn btn-outline-secondary" style="margin-top: 1rem;">Обновить категории</button>
-            </a>
+          </a>
         </form>
     </div>
     <div class="form" style="border-color: #3772FF; height: 300px">
@@ -58,16 +69,38 @@
           </div>
     </div>
     <div class="form" style="border-color: #D00000;">
-        <p style="font-size: 1.5rem;">Удаление</p>
+        <p style="font-size: 1.2rem;">Удаление записей</p>
         <form method='post'>
           {% csrf_token %}
             <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Номер записи</label>
-            {{ delete_form.record_id }}
+            {{ delete_record_form.record_id }}
             </div>
             <button type="submit" class="btn btn-outline-danger">Удалить</button>
         </form>
     </div>
+    <div class="form">
+      <p style="font-size: 1.2rem;">Удаление категорий</p>
+      <form method='post'>
+        {% csrf_token %}
+          <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Категория</label>
+          {{ delete_category.del_category }}
+          <script>
+            debit_category = [{%for i in debit_categories%}'{{i}}',{%endfor%}];
+            select = document.getElementById('id_del_category')
+          
+            for(let i in debit_category){
+              let elem = document.createElement('option');
+              elem.innerHTML = `${debit_category[i]}`
+              elem.value = `${debit_category[i]}`
+              select.append(elem)
+            }
+          </script>
+          </div>
+          <button type="submit" class="btn btn-outline-danger">Удалить</button>
+      </form>
+  </div>
     </div>
 </div>
     {% else %}

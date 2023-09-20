@@ -108,3 +108,22 @@ class delete_record(forms.Form):
             attrs={"type": "number", "class": "form-control", "aria-label": "amount"}
         ),
     )
+
+
+class delete_category(forms.Form):
+    del_category = forms.ChoiceField(
+        choices=[],
+        required=True,
+        widget=forms.Select(
+            attrs={
+                "class": "form-control form-control-lg  select",
+                "style": "font-size: 1rem;",
+            }
+        ),
+    )
+
+    def add_choices(self, list_of_choices):
+        choices = []
+        for i in list_of_choices:
+            choices.append([i, i])
+        self.base_fields["del_category"].choices = choices

@@ -69,6 +69,27 @@ body {
     margin-bottom: 1rem;
 }
 
+.form_2{
+    background-color: #1a1a1a;
+    border: solid;
+    border-width: 0.5rem;
+    border-radius: 1rem;
+    color: #fff;
+    padding: 1rem;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    display: flex;
+}
+
+.form_2>div{
+    background-color: #000;
+    padding: 2rem;
+    border: solid;
+    border-width: 0.5rem;
+    border-radius: 1rem;
+    
+}
+
 body>div>a>p:hover {
     color: #198754;
 }
