@@ -3,6 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    path("credit/", views.v_credit),
+    path("credit/", views.view_credit.as_view()),
     path("debit/", views.view_debit.as_view()),
 ]
