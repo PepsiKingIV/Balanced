@@ -1,4 +1,3 @@
-
 import os
 from pathlib import Path
 from django.urls import reverse_lazy
@@ -18,24 +17,24 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
-LOGIN_URL = '127.0.0.1:8000/account/login/'
-LOGOUT_URL = reverse_lazy('logout')
+LOGIN_REDIRECT_URL = reverse_lazy("dashboard")
+LOGIN_URL = "127.0.0.1:8000/account/login/"
+LOGOUT_URL = reverse_lazy("logout")
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'Fonovad@Gmail.com'
-EMAIL_HOST_PASSWORD = 'ksazwnseezfzaiba'
-DEFAULT_TO_EMAIL = 'Fonovad@Gmail.com'
+EMAIL_HOST_USER = "Fonovad@Gmail.com"
+EMAIL_HOST_PASSWORD = "ksazwnseezfzaiba"
+DEFAULT_TO_EMAIL = "Fonovad@Gmail.com"
 
 # Application definition
 
 INSTALLED_APPS = [
-    'account',
+    "account",
     "debit",
     "main",
     "user_stat",
@@ -45,6 +44,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "djoser",
 ]
 
 MIDDLEWARE = [
@@ -84,13 +86,12 @@ WSGI_APPLICATION = "Balanced.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        'NAME': 'balanced',
-        'USER': 'aleksandr',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        "NAME": "balanced",
+        "USER": "aleksandr",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
     }
 }
-
 
 
 # Password validation
@@ -133,3 +134,19 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}

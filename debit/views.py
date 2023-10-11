@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 from .forms import debit_form, credit_form, category, delete_record, delete_category
 from account.models import Profile
 from django.views import View
+from rest_framework import generics, viewsets, mixins
+from .serializers import CreditSerializer, DebitSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
+
+
 
 
 def check_email_verify(user_id):
@@ -93,6 +98,17 @@ class view_debit(View):
                 category=self.categoryJSON
             )
         return redirect(to="http://127.0.0.1:8000/data/debit")
+    
+class CreditAPIList(generics.ListAPIView):
+    queryset = credit.objects.all()
+    serializer_class = CreditSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+    
+class DebitAPIList(generics.ListAPIView):
+    queryset = data.objects.all()
+    serializer_class = DebitSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+    
 
 
 # def v_debit(request):
