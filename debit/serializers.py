@@ -19,3 +19,6 @@ class DebitSerializer(serializers.ModelSerializer):
     class Meta:
         model = data
         fields = "__all__"
+        
+    def create(self, validated_data):
+        return data.objects.create(**validated_data)

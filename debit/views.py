@@ -6,7 +6,8 @@ from account.models import Profile
 from django.views import View
 from rest_framework import generics, viewsets, mixins
 from .serializers import CreditSerializer, DebitSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
 
 
 
@@ -34,7 +35,7 @@ class view_debit(View):
             if_verify = check_email_verify(self.user_id)
             self.categoryJSON = self.get_category(user_id=self.user_id)
             debit_categories = self.categoryJSON["debit"].copy()
-        records = data.objects.all().order_by("-id")
+        records = data.objects.filter(user_id=self.user_id).order_by("-id")
         return render(
             request,
             "debit/debit.html",
@@ -58,6 +59,7 @@ class view_debit(View):
 
     def get_userID(self, request):
         user_id = User.objects.filter(username=f"{request.user}").values()[0]["id"]
+        print(user_id)
         return user_id
 
     def post(self, request):
@@ -75,9 +77,8 @@ class view_debit(View):
 
     def date_form(self, request):
         form_1 = debit_form(request.POST)
-        if form_1.is_valid():
-            db_form = form_1.create_db_form(self.user_id, request)
-            data.record(form=db_form)
+        db_form = form_1.create_db_form(self.user_id, request)
+        data.record(form=db_form)
         return redirect(to="http://127.0.0.1:8000/data/debit")
 
     def category_form(self, request):
@@ -100,110 +101,36 @@ class view_debit(View):
         return redirect(to="http://127.0.0.1:8000/data/debit")
     
 class CreditAPIList(generics.ListAPIView):
-    queryset = credit.objects.all()
+    # queryset = credit.objects.all()
     serializer_class = CreditSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAuthenticated, )
+    
+    def get(self, request, *args, **kwargs):
+        user_id = User.objects.filter(username=f"{request.user}").values()[0]["id"]
+        self.queryset = credit.objects.filter(user_id=user_id).order_by("-id")
+        return super().get(request, *args, **kwargs)
     
 class DebitAPIList(generics.ListAPIView):
-    queryset = data.objects.all()
+    # queryset = data.objects.all()
     serializer_class = DebitSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAuthenticated, )
     
+    def get(self, request, *args, **kwargs):
+        user_id = User.objects.filter(username=f"{request.user}").values()[0]["id"]
+        self.queryset = data.objects.filter(user_id=user_id).order_by("-id")
+        return super().get(request, *args, **kwargs)
+    
+class CreditAPICreate(generics.CreateAPIView):
+    serializer_class = DebitSerializer
+    permission_classes = (IsAuthenticated, )
+    
+    def post(self, request, *args, **kwargs):     
+        serializer = DebitSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'post' : serializer.data})
 
-
-# def v_debit(request):
-#     form_1 = debit_form()
-#     form_2 = category()
-#     form_3 = delete_record()
-#     if_verify = False
-#     if request.user.is_authenticated:
-#         user_id = User.objects.filter(username=f"{request.user}").values()[0]["id"]
-#         if_verify = check_email_verify(user_id)
-#         categoryJSON = {}
-#         if Profile.objects.filter(user_id=user_id).exists():
-#             categoryJSON = Profile.objects.filter(user_id=user_id).values()[0][
-#                 "category"
-#             ]
-#             form_1.add_choices(categoryJSON["debit"].copy())
-#         if request.method == "POST":
-#             if "date" in request.POST:
-#                 form_1 = debit_form(request.POST)
-#                 if form_1.is_valid():
-#                     db_form = form_1.create_db_form(user_id, request)
-#                     data.record(form=db_form)
-#                     return redirect(to="http://127.0.0.1:8000/data/debit")
-#             elif "category" in request.POST:
-#                 form_2 = category(request.POST)
-#                 if form_2.is_valid():
-#                     if not request.POST["category"] in categoryJSON["debit"]:
-#                         categoryJSON["debit"].append(request.POST["category"])
-#                     Profile.objects.filter(user_id=user_id).update(
-#                         category=categoryJSON
-#                     )
-#                     return redirect(to="http://127.0.0.1:8000/data/debit")
-#             elif "record_id" in request.POST:
-#                 data.delete(request=request.POST)
-#                 return redirect(to="http://127.0.0.1:8000/data/debit")
-#     records = data.objects.all().order_by("-id")
-#     return render(
-#         request,
-#         "debit/debit.html",
-#         {
-#             "debit_form": form_1,
-#             "category_form": form_2,
-#             "delete_form": form_3,
-#             "records": records,
-#             "verify": if_verify,
-#         },
-#     )
-
-
-# def v_credit(request):
-#     form_1 = credit_form()
-#     form_2 = category()
-#     form_3 = delete_record()
-#     if_verify = False
-#     if request.user.is_authenticated:
-#         user_id = User.objects.filter(username=f"{request.user}").values()[0]["id"]
-#         if_verify = check_email_verify(user_id)
-#         categoryJSON = {}
-#         if Profile.objects.filter(user_id=user_id).exists():
-#             categoryJSON = Profile.objects.filter(user_id=user_id).values()[0][
-#                 "category"
-#             ]
-#             form_1.add_choices(categoryJSON["credit"].copy())
-#             print(form_1)
-#         if request.method == "POST":
-#             if "date" in request.POST:
-#                 form_1 = credit_form(request.POST)
-#                 if form_1.is_valid():
-#                     db_form = form_1.create_db_form(user_id, request)
-#                     credit.record(form=db_form)
-#                     return redirect(to="http://127.0.0.1:8000/data/credit")
-#             elif "category" in request.POST:
-#                 form_2 = category(request.POST)
-#                 if form_2.is_valid():
-#                     if not request.POST["category"] in categoryJSON["credit"]:
-#                         categoryJSON["credit"].append(request.POST["category"])
-#                     Profile.objects.filter(user_id=user_id).update(
-#                         category=categoryJSON
-#                     )
-#                     return redirect(to="http://127.0.0.1:8000/data/credit")
-#             elif "record_id" in request.POST:
-#                 credit.delete(request=request.POST)
-#                 return redirect(to="http://127.0.0.1:8000/data/credit")
-#     records = credit.objects.all().order_by("-id")
-#     return render(
-#         request,
-#         "debit/credit.html",
-#         {
-#             "debit_form": form_1,
-#             "category_form": form_2,
-#             "delete_form": form_3,
-#             "records": records,
-#             "verify": if_verify,
-#         },
-#     )
+    
 
 class view_credit(View):
     template_name = "debit/debit.html"
@@ -224,7 +151,7 @@ class view_credit(View):
             if_verify = check_email_verify(self.user_id)
             self.categoryJSON = self.get_category(user_id=self.user_id)
             credit_categories = self.categoryJSON["credit"].copy()
-        records = data.objects.all().order_by("-id")
+        records = credit.objects.filter(user_id=self.user_id).order_by("-id")
         return render(
             request,
             "debit/credit.html",
@@ -258,16 +185,15 @@ class view_credit(View):
         elif "category" in request.POST:
             return self.category_form(request)
         elif "record_id" in request.POST:
-            data.delete(request=request.POST)
+            credit.delete(request=request.POST)
             return redirect(to="http://127.0.0.1:8000/data/credit")
         elif "del_category" in request.POST:
             return self.del_category(request)
 
     def date_form(self, request):
         form_1 = credit_form(request.POST)
-        if form_1.is_valid():
-            db_form = form_1.create_db_form(self.user_id, request)
-            data.record(form=db_form)
+        db_form = form_1.create_db_form(self.user_id, request)
+        credit.record(form=db_form)
         return redirect(to="http://127.0.0.1:8000/data/credit")
 
     def category_form(self, request):

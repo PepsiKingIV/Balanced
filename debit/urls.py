@@ -7,6 +7,8 @@ urlpatterns = [
     path("debit/", view_debit.as_view()),
     path("api/debit/", DebitAPIList.as_view()),
     path("api/credit/", CreditAPIList.as_view()),
+    path("api/credit/create/", CreditAPICreate.as_view()),
+    path("api/debit/create/", CreditAPIList.as_view()),
     path("api/auth/", include("djoser.urls")),
     re_path(r"^auth/", include("djoser.urls.authtoken")),
 ]
