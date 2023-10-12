@@ -90,7 +90,7 @@ class credit_form(forms.Form):
 
 class category(forms.Form):
     category = forms.CharField(
-        widget=forms.TextInput(
+        widget=forms.Select(
             attrs={
                 "class": "form-control",
                 "type": "text",
