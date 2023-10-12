@@ -70,9 +70,9 @@ class view_debit(View):
 
     def date_form(self, request):
         form_1 = debit_form(request.POST)
-        if form_1.is_valid():
-            db_form = form_1.create_db_form(self.user_id, request)
-            data.record(form=db_form)
+        # if form_1.is_valid():
+        db_form = form_1.create_db_form(self.user_id, request)
+        data.record(form=db_form)
         return redirect(to="http://127.0.0.1:8000/data/debit")
 
     def category_form(self, request):
